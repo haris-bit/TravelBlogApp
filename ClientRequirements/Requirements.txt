@@ -1,0 +1,70 @@
+Development Phases:
+
+We'll develop the entire app in the MERN stack, breaking it into phases: frontend, backend, and integration. Blogs will be stored in MongoDB, with Express for backend and Next.js for frontend. User authentication will use NextAuth.
+
+Pages and Features:
+
+1) Home Page:
+
+Latest blog posts with titles, authors, and excerpts.
+Navigation links, search, login/signup buttons.
+"Policy" page for content guidelines.
+
+2) Blog Post Page:
+
+Full content, author details, publication date.
+Upvoting, likes, comments, and edit/disable options.
+
+3) User Profile:
+
+Basic info, user's blog posts, authorship request button.
+Form for details and niche on request.
+
+4) Admin Dashboard:
+
+Manage authorship requests, overview of posts and users.
+Edit/delete posts, view reports, and author lookup.
+
+5) Author Dashboard:
+
+Write new posts, view stats, and receive "Strike" notifications.
+
+6) Signup/Login:
+
+Standard fields, with links for recovery and sign-up.
+
+7) About and Contact:
+
+Info on blog purpose/history, and a contact form.
+
+Functional Requirements:
+
+a. User Authentication:
+
+Guest, regular user, and admin types.
+Secure password storage, token-based authentication.
+
+b. User Roles and Permissions:
+
+Admins grant authorship, authors write/edit posts.
+All users can read/view, and regular users can comment.
+
+c. Post Management:
+
+CRUD for posts, save drafts for authors, pagination.
+
+d. Commenting and Interaction:
+
+CRUD for comments, upvoting, liking, and moderation.
+
+e. Notifications:
+
+Notify authors of new comments/likes.
+Notify regular users of authorship request status.
+
+f. Additional Features:
+
+Search, categories, tags.
+Social media integration, email notifications.
+Analytics for tracking, related/popular posts.
+Reporting system with predefined reasons.
