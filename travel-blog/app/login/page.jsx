@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 const LogIn = () => {
     return (
-        <div className="w-full min-h-screen flex flex-col justify-center items-center bg-slate-900">
+        <div className="w-full min-h-screen flex flex-col justify-center items-center bg-slate-900 text-black">
             <div className="w-full max-w-[474px] mx-auto bg-white rounded-[33px] border border-solid border-[#e4e4e4] p-8">
                 <div className="text-[30px] font-semibold text-black mb-8">
                     Login
@@ -43,7 +45,9 @@ const LogIn = () => {
 
                 <p className="text-[14px] text-transparent flex justify-center items-center mb-6">
                     <span className="text-black mr-1">Don&apos;t have an account? </span>
-                    <span className="text-[#00a3e8] cursor-pointer">Sign Up</span>
+                    <Link href="/signup">
+                        <span className="text-[#00a3e8] cursor-pointer">Sign Up</span>
+                    </Link>
                 </p>
             </div>
         </div>
