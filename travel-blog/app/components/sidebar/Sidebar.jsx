@@ -16,7 +16,7 @@ import { BiSolidHelpCircle } from "react-icons/bi";
 const Sidebar = () => {
     return (
         <div
-            className='flex flex-col w-1/5 h-fit bg-[#F4F4F4]
+            className='flex flex-col w-1/5 h-full bg-[#F4F4F4]
             border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4
             font-sans fixed top-16 left-0 z-50
             text-black
@@ -27,7 +27,7 @@ const Sidebar = () => {
             {/* navbar links */}
 
             <div
-                className='flex flex-col justify-center gap-2'
+                className='flex flex-col justify-center gap-4'
             >
 
                 <div
@@ -89,7 +89,7 @@ const Sidebar = () => {
             />
 
             <div
-                className='mt-2 mb-2 ml-6 flex flex-col justify-center gap-2 '
+                className='mt-2 mb-2 ml-6 flex flex-col justify-center gap-4 '
             >
                 <span
                     className='text-xl'

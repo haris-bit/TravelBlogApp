@@ -1,4 +1,4 @@
-import User from '@app/user/page';
+import Profile from '@app/profile/page';
 import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
@@ -14,7 +14,7 @@ const MainPage = () => {
                 className='flex flex-row w-full h-full'
             >
                 <Sidebar />
-                <User />
+                <Profile />
             </div>
         </div>
     )
