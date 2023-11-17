@@ -3,10 +3,12 @@ import React from 'react'
 
 const Navbar = () => {
     return (
-        <div id="NewRootRoot" className="flex flex-col w-full">
+        <div id="NewRootRoot" className="flex flex-col w-full
+        fixed top-0 left-0 z-50">
             <div className="bg-[#1e1e1e] flex flex-col justify-end pt-2 gap-2">
                 <div className="flex flex-row justify-between items-center ml-12 mr-6">
-                    <div className="text-xl font-['Montserrat'] font-bold leading-[24px] text-white">
+                    <div className="text-xl font-['Montserrat'] font-bold leading-[24px] text-white
+                    ">
                         TravelBlog
                     </div>
                     <div className="self-start flex flex-row gap-8 w-[937px] items-center">
@@ -67,7 +69,7 @@ const Navbar = () => {
                                         height={24}
                                     />
                                     <div className="font-['Poppins'] font-medium text-white mt-2">
-                                        Jaren Buel
+                                        Jaren
                                     </div>
                                 </div>
                                 <Image

@@ -1,14 +1,21 @@
+import User from '@app/user/page';
 import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 
+
 const MainPage = () => {
     return (
         <div
-            className='flex flex-col w-full h-screen bg-[#F4F4F4]'
+            className='flex flex-col w-full min-h-screen bg-[#F4F4F4]'
         >
             <Navbar />
-            <Sidebar />
+            <div
+                className='flex flex-row w-full h-full'
+            >
+                <Sidebar />
+                <User />
+            </div>
         </div>
     )
 }

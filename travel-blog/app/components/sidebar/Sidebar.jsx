@@ -4,13 +4,22 @@ import Image from 'next/image'
 import { AiFillHome } from 'react-icons/ai'
 import { GiProgression } from 'react-icons/gi'
 import { BiUserCircle } from 'react-icons/bi'
+// import icons for about us and help
+import { FaInfoCircle } from 'react-icons/fa'
+import { RiQuestionAnswerLine } from 'react-icons/ri'
+import { IoDocumentText } from "react-icons/io5";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { BiSolidHelpCircle } from "react-icons/bi";
+
+
 
 const Sidebar = () => {
     return (
         <div
-            className='flex flex-col w-1/5 h-screen bg-[#F4F4F4]
+            className='flex flex-col w-1/5 h-fit bg-[#F4F4F4]
             border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4
-            font-sans
+            font-sans fixed top-16 left-0 z-50
+            text-black
             '
         >
 
@@ -27,6 +36,7 @@ const Sidebar = () => {
                 hover:rounded-md
                 gap-4
                 px-6 py-2
+                cursor-pointer
                 '
                 >
                     <AiFillHome
@@ -44,6 +54,7 @@ const Sidebar = () => {
                 hover:rounded-md
                 gap-4
                 px-6 py-2
+                cursor-pointer
                 '
                 >
                     <GiProgression
@@ -62,6 +73,7 @@ const Sidebar = () => {
                 hover:rounded-md
                 gap-4
                 px-6 py-2
+                cursor-pointer
                 '
                 >
                     <BiUserCircle
@@ -77,7 +89,7 @@ const Sidebar = () => {
             />
 
             <div
-                className='mt-2 mb-2 ml-2 flex flex-col justify-center gap-2 '
+                className='mt-2 mb-2 ml-6 flex flex-col justify-center gap-2 '
             >
                 <span
                     className='text-xl'
@@ -91,6 +103,7 @@ const Sidebar = () => {
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-3
+                cursor-pointer
                 '
                 >
                     Hiking
@@ -101,6 +114,7 @@ const Sidebar = () => {
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-3
+                cursor-pointer
                 '
                 >
                     Lodging and Camping
@@ -111,6 +125,7 @@ const Sidebar = () => {
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-3
+                cursor-pointer
                 '
                 >
                     Food & Drink
@@ -121,16 +136,41 @@ const Sidebar = () => {
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-3
+                cursor-pointer
                 '
                 >
                     Site Seeing
                 </div>
             </div>
 
+            <hr
+                className='border border-[#D3D3D3] mt-4 mb-2 '
+            />
 
-
-
-
+            <div
+                className='mt-2 mb-2 ml-2 flex flex-col justify-center'
+            >
+                <span
+                    className='text-normal flex items-center gap-2  
+                hover:bg-[#E9E9E9] cursor-pointer rounded-md
+                px-4 py-2
+                    '
+                >
+                    <IoDocumentText className='text-xl' />
+                    <p>
+                        About Us
+                    </p>
+                </span>
+                <span
+                    className='text-normal flex items-center gap-2  
+                hover:bg-[#E9E9E9] cursor-pointer rounded-md
+                px-4 py-2
+                    '
+                >
+                    <BiSolidHelpCircle className='text-xl' />
+                    Help
+                </span>
+            </div>
         </div >
     )
 }

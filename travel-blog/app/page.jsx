@@ -6,7 +6,9 @@ import SignUp from './signup/page'
 
 export default function Home() {
   return (
-    <div>
+    <div
+      className='bg-[#F4F4F4]'
+    >
       <MainPage />
     </div>
   )
