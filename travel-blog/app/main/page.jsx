@@ -3,6 +3,7 @@ import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 import PostForm from '../components/postcreate/PostForm'
+import SinglePost from '@app/singlepost/page'
 
 
 const MainPage = () => {
@@ -15,7 +16,14 @@ const MainPage = () => {
                 className='flex flex-row w-full h-full'
             >
                 <Sidebar />
-                <PostForm />
+                <div
+                    className='flex flex-col w-full h-full'
+                >
+                    <PostForm />
+                    <SinglePost />
+                    <SinglePost />
+                    <SinglePost />
+                </div>
             </div>
         </div>
     )
