@@ -10,6 +10,7 @@ import { RiQuestionAnswerLine } from 'react-icons/ri'
 import { IoDocumentText } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { BiSolidHelpCircle } from "react-icons/bi";
+import Link from 'next/link'
 
 
 
@@ -23,7 +24,6 @@ const Sidebar = () => {
             '
         >
 
-
             {/* navbar links */}
 
             <div
@@ -31,55 +31,71 @@ const Sidebar = () => {
             >
 
                 <div
-                    className='flex items-center
+
+                >
+                    <Link href='/'
+                        className='flex items-center
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-4
                 px-6 py-2
                 cursor-pointer
                 '
-                >
-                    <AiFillHome
-                        className='text-xl'
-                    />
-                    <span
-                        className='text-center'>
-                        Home
-                    </span>
-                </div>
-
-                <div
-                    className='flex items-center
-                hover:bg-[#E9E9E9]
-                hover:rounded-md
-                gap-4
-                px-6 py-2
-                cursor-pointer
-                '
-                >
-                    <GiProgression
-                        className='text-xl'
-                    />
-
-                    <span
-                        className='text-center'
                     >
-                        Popular
-                    </span>
+                        <AiFillHome
+                            className='text-xl'
+                        />
+                        <span
+                            className='text-center'>
+                            Home
+                        </span>
+                    </Link>
                 </div>
+
                 <div
-                    className='flex items-center 
+
+                >
+                    <Link href='/popular'
+                        className='flex items-center
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-4
                 px-6 py-2
                 cursor-pointer
                 '
+                    >
+                        <GiProgression
+                            className='text-xl'
+                        />
+
+                        <span
+                            className='text-center'
+                        >
+                            Popular
+                        </span>
+                    </Link>
+                </div>
+                <div
+
                 >
-                    <BiUserCircle
-                        className='text-2xl'
-                    />
-                    Profile
+                    <Link href='/profile'
+                        className='flex items-center 
+                hover:bg-[#E9E9E9]
+                hover:rounded-md
+                gap-4
+                px-6 py-2
+                cursor-pointer
+                '
+                    >
+                        <BiUserCircle
+                            className='text-2xl'
+                        />
+                        <span
+                            className='text-center' >
+                            Profile
+                        </span>
+                    </Link>
+
                 </div>
 
             </div>
