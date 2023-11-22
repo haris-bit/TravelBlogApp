@@ -1,7 +1,83 @@
+"use client";
+
 import React from 'react'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const SignUp = () => {
+    const [countries, setCountries] = useState([]);
+    const [firstName, setFirstName] = useState('')
+    const [surname, setSurname] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [country, setCountry] = useState('')
+    const [monthOfBirth, setMonthOfBirth] = useState('')
+    const [dayOfBirth, setDayOfBirth] = useState('')
+    const [yearOfBirth, setYearOfBirth] = useState('')
+
+    const handleSignUp = async () => {
+        // check if any field is empty
+        if (
+            firstName === '' ||
+            surname === '' ||
+            email === '' ||
+            password === '' ||
+            country === '' ||
+            monthOfBirth === '' ||
+            dayOfBirth === '' ||
+            yearOfBirth === ''
+        ) {
+            alert('All fields are required')
+            return
+        }
+
+        // check user has agreed to terms and conditions
+        if (!document.getElementById('terms').checked) {
+            alert('Please agree to terms and conditions')
+            return
+        }
+
+        // check user has agreed learn more about travel blog
+        if (!document.getElementById('learn-more').checked) {
+            alert('Please agree to learn more about travel blog')
+            return
+        }
+
+        // send request to server
+        const res = await axios.post('http://localhost:5000/register', {
+            firstName,
+            surname,
+            email,
+            password,
+            country,
+            monthOfBirth,
+            dayOfBirth,
+            yearOfBirth,
+        })
+
+        // check if sign up is successful
+        if (res.data.success) {
+            window.location.href = '/login'
+        } else {
+            // show error message
+            console.log(res.data.message)
+            alert('Error: ' + res.data.message)
+        }
+    }
+
+    useEffect(() => {
+        // Fetch countries from the REST Countries API
+        axios.get('https://restcountries.com/v3.1/all')
+            .then((response) => {
+                setCountries(response.data.map((country) => country.name.common));
+            })
+            .catch((error) => {
+                console.error('Error fetching countries:', error);
+            });
+    }, []);
+
+
     return (
         <div
             className='w-full min-h-full flex flex-col justify-center items-center bg-slate-900
@@ -10,7 +86,7 @@ const SignUp = () => {
         >
             {/* create a card with white background and in the vertically middle */}
             <div
-                className=' flex flex-col items-center  w-full max-w-[474px] h-screen mt-4 mb-4 mx-auto bg-white rounded-[33px] border border-solid border-[#e4e4e4] p-8'
+                className=' flex flex-col items-center  w-[474px] h-full mt-4 mb-4 mx-auto bg-white rounded-[33px] border border-solid border-[#e4e4e4] p-8'
             >
                 {/* sub heading */}
                 <div
@@ -38,6 +114,8 @@ const SignUp = () => {
                             className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
                             type='text'
                             placeholder='First name'
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                         />
                     </div>
 
@@ -49,6 +127,8 @@ const SignUp = () => {
                             className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
                             type='text'
                             placeholder='Surname'
+                            value={surname}
+                            onChange={(e) => setSurname(e.target.value)}
                         />
                     </div>
                 </div>
@@ -61,6 +141,8 @@ const SignUp = () => {
                         className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
                         type='email'
                         placeholder='Email Address'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
 
@@ -72,6 +154,8 @@ const SignUp = () => {
                         className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
                         type='password'
                         placeholder='Password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
 
@@ -89,27 +173,15 @@ const SignUp = () => {
                     <select
                         className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4
                         '
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
                     >
-                        <option
-                            value='Select Country'
-                        >
-                            Select Country
-                        </option>
-                        <option
-                            value='India'
-                        >
-                            India
-                        </option>
-                        <option
-                            value='USA'
-                        >
-                            USA
-                        </option>
-                        <option
-                            value='UK'
-                        >
-                            UK
-                        </option>
+                        <option value='Select Country'>Select Country</option>
+                        {countries.map((name) => (
+                            <option key={name} value={name}>
+                                {name}
+                            </option>
+                        ))}
                     </select>
 
                 </div>
@@ -130,6 +202,8 @@ const SignUp = () => {
 
                         <select
                             className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
+                            value={monthOfBirth}
+                            onChange={(e) => setMonthOfBirth(e.target.value)}
                         >
                             <option value='Month'>Month</option>
                             <option value='January'>January</option>
@@ -161,17 +235,16 @@ const SignUp = () => {
 
                         <select
                             className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
+                            value={dayOfBirth}
+                            onChange={(e) => setDayOfBirth(e.target.value)}
                         >
                             <option value='Day'>Day</option>
-                            <option value='Sunday'>Sunday</option>
-                            <option value='Monday'>Monday</option>
-                            <option value='Tuesday'>Tuesday</option>
-                            <option value='Wednesday'>Wednesday</option>
-                            <option value='Thursday'>Thursday</option>
-                            <option value='Friday'>Friday</option>
-                            <option value='Saturday'>Saturday</option>
+                            {Array.from({ length: 31 }, (_, index) => index + 1).map((day) => (
+                                <option key={day} value={day}>
+                                    {day}
+                                </option>
+                            ))}
                         </select>
-
                     </div>
 
 
@@ -187,6 +260,8 @@ const SignUp = () => {
 
                         <select
                             className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4'
+                            value={yearOfBirth}
+                            onChange={(e) => setYearOfBirth(e.target.value)}
                         >
                             <option value='Year'>Year</option>
                             {Array.from({ length: 2023 - 1980 + 1 }, (_, index) => 1980 + index).map((year) => (
@@ -207,6 +282,7 @@ const SignUp = () => {
                     <input
                         className='w-[20px] h-[20px] rounded-[3px] border border-solid border-[#cacaca] focus:outline-none mr-2'
                         type='radio'
+                        id='learn-more'
                     />
                     <div
                         className='text-[12px] text-black mb-2 text-center mt-2'
@@ -227,6 +303,7 @@ const SignUp = () => {
                     <input
                         className='w-[20px] h-[20px] rounded-[3px] border border-solid border-[#cacaca] focus:outline-none mr-2'
                         type='radio'
+                        id='terms'
                     />
                     <div
                         className='text-[12px] text-black mb-2 text-center mt-2'
@@ -248,17 +325,19 @@ const SignUp = () => {
 
                 {/* Sign up button in the middle of the page */}
                 <div
-                    className='w-full flex flex-col items-center justify-center mb-8 '
+                    className='w-full flex flex-col items-center justify-center mb-2'
                 >
                     <button
-                        className='w-[200px] h-[40px] rounded-full bg-[#00a3e8] text-white focus:outline-none'
+                        className='w-[200px] h-[40px] rounded-full bg-[#00a3e8] text-white focus:outline-none mt-4'
+                        onClick={handleSignUp}
                     >
                         Sign Up
+                        &raquo;
                     </button>
 
                     {/* alread have an account */}
                     <div
-                        className='text-[12px] text-black mb-2 text-center mt-2'
+                        className='text-[12px] text-black mb-2 text-center mt-4'
                     >
                         Already have an account?
 

@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image'
 import Navbar from './components/navbar/Navbar'
 import LogIn from './login/page'
