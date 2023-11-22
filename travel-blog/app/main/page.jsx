@@ -4,13 +4,10 @@ import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
 import PostForm from '../components/postcreate/PostForm'
 import SinglePost from '@app/singlepost/page'
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react'
 
 
 const MainPage = () => {
-
-    const searchParams = useSearchParams();
-    const email = searchParams.get('email');
 
     return (
         <div
@@ -20,7 +17,8 @@ const MainPage = () => {
             <div
                 className='flex flex-row w-full h-full'
             >
-                <Sidebar />
+                <Sidebar
+                />
                 <div
                     className='flex flex-col w-full h-full'
                 >
@@ -28,7 +26,6 @@ const MainPage = () => {
                     <SinglePost />
                     <SinglePost />
                     <SinglePost />
-
 
                 </div>
             </div>

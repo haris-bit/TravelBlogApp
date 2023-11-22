@@ -4,6 +4,8 @@ import React from 'react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { GrCamera } from 'react-icons/gr';
+import Image from 'next/image';
 
 const SignUp = () => {
     const [countries, setCountries] = useState([]);
@@ -12,9 +14,24 @@ const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [country, setCountry] = useState('')
+    const [bio, setBio] = useState('')
+    const [profileImage, setProfileImage] = useState(null)
     const [monthOfBirth, setMonthOfBirth] = useState('')
     const [dayOfBirth, setDayOfBirth] = useState('')
     const [yearOfBirth, setYearOfBirth] = useState('')
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setProfileImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        // console.log(file);
+    };
+
 
     const handleSignUp = async () => {
         // check if any field is empty
@@ -24,11 +41,19 @@ const SignUp = () => {
             email === '' ||
             password === '' ||
             country === '' ||
+            bio === '' ||
             monthOfBirth === '' ||
             dayOfBirth === '' ||
-            yearOfBirth === ''
+            yearOfBirth === '' ||
+            profileImage === null
         ) {
             alert('All fields are required')
+            return
+        }
+
+        // check if the bio is less than 200 characters
+        if (bio.length > 200) {
+            alert('Bio must be less than 200 characters')
             return
         }
 
@@ -51,9 +76,11 @@ const SignUp = () => {
             email,
             password,
             country,
+            bio,
             monthOfBirth,
             dayOfBirth,
             yearOfBirth,
+            profileImage,
         })
 
         // check if sign up is successful
@@ -80,7 +107,7 @@ const SignUp = () => {
 
     return (
         <div
-            className='w-full min-h-full flex flex-col justify-center items-center bg-slate-900
+            className='w-full min-h-screen flex flex-col justify-center items-center bg-slate-900
             text-black
             '
         >
@@ -186,6 +213,32 @@ const SignUp = () => {
 
                 </div>
 
+                {/* Div for bio - textarea */}
+                <div
+                    className='mb-6 w-full '
+                >
+
+                    <div
+                        className='text-[14px] text-black mb-2'
+                    >
+                        Biography
+                    </div>
+                    <div
+                        className='text-[14px] text-gray-500 mb-2'
+                    >
+                        *It must be less than 200 characters
+                    </div>
+                    <textarea
+                        className='w-full h-[37px] rounded-[9px] border border-solid border-[#cacaca] focus:outline-none px-4
+                        resize-none
+                        '
+                        type='text'
+                        placeholder='Enter your bio...'
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                    />
+                </div>
+
                 {/* create dropdown for date of birth with month, day and year all are dropdown and in the single line. Also add there lables like Month, Day and Year */}
                 <div
                     className='mb-6 w-full flex flex-row justify-between'
@@ -270,10 +323,47 @@ const SignUp = () => {
                                 </option>
                             ))}
                         </select>
-
-
                     </div>
                 </div>
+
+                {/* div for profile image */}
+                <div
+                    className='w-full flex flex-col mt-2 mb-6 '
+                >
+                    <h2 className='mt-4'>Upload Profile Image</h2>
+
+                    <p className='text-sm text-gray-500 mt-4'>
+                        *Upload the image in the .jpg or .png format
+                    </p>
+
+                    {/* Image upload */}
+                    <label htmlFor='imageUpload' className='cursor-pointer mt-4
+                border border-gray-300 rounded-full w-20 h-20 flex items-center justify-center
+                '>
+                        {profileImage ? (
+                            <Image
+                                src={profileImage}
+                                alt='Selected'
+                                className='w-20 h-20 object-cover rounded-full'
+                                width={80}
+                                height={80}
+                            />
+                        ) : (
+                            <
+                                GrCamera
+                            />
+                        )}
+                    </label>
+                    <input
+                        type='file'
+                        name='profileImage'
+                        id='imageUpload'
+                        accept='image/*'
+                        className='hidden'
+                        onChange={handleFileChange}
+                    />
+                </div>
+
 
                 {/* checkbox for use of terms and privacy policy */}
                 <div

@@ -1,7 +1,29 @@
+"use client";
 import Image from 'next/image'
-import React from 'react'
+import Link from 'next/link';
+import { useState, useEffect } from 'react'
+
 
 const Navbar = () => {
+    const [email, setEmail] = useState();
+    const [firstname, setFirstname] = useState();
+    const [surname, setSurname] = useState();
+    useEffect(() => {
+        const email = window.localStorage.getItem('userEmail');
+        setEmail(email);
+    }, [])
+
+    useEffect(() => {
+        // call the api to get the user's name
+        fetch(`http://localhost:5000/api/users/${email}`)
+            .then(res => res.json())
+            .then(data => {
+                setFirstname(data.firstName)
+                setSurname(data.surname)
+            })
+    }, [email])
+
+
     return (
         <div id="NewRootRoot" className="flex flex-col w-full
         fixed top-0 left-0 z-50">
@@ -68,18 +90,56 @@ const Navbar = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <div className="font-['Poppins'] font-medium text-white mt-2">
-                                        Jaren
+                                    <div className="flex font-['Poppins'] font-medium text-white mt-1 gap-2 ">
+                                        <span>
+                                            {firstname}
+                                        </span>
+                                        <span>
+                                            {surname}
+                                        </span>
                                     </div>
                                 </div>
-                                <Image
-                                    src="https://file.rendit.io/n/QiQXeLG86CsWmzT4zFTT.svg"
-                                    alt="Arrowforwardios"
-                                    id="Arrowforwardios"
-                                    className="w-6 shrink-0"
-                                    width={24}
-                                    height={24}
-                                />
+                                <select
+                                    // make it transparent
+                                    className="bg-transparent font-['Poppins'] font-medium text-white self-start mt-2 outline-none w-1/2"
+                                >
+                                    <option value=""></option>
+                                    <option value="Profile"
+                                        className='text-black'
+                                    >
+                                        {/* pass email as parameter */}
+                                        <Link
+                                            href="/profile">
+                                            Profile
+                                        </Link>
+                                    </option>
+                                    <option value="About"
+                                        className='text-black'
+                                    >
+                                        <Link
+                                            href="/about">
+                                            About
+                                        </Link>
+                                    </option>
+
+                                    <option value="Help"
+                                        className='text-black'
+                                    >
+                                        <Link
+                                            href="/help">
+                                            Help
+                                        </Link>
+                                    </option>
+
+                                    <option value="Logout"
+                                        className='text-black'
+                                    >
+                                        <Link
+                                            href="/logout">
+                                            Logout
+                                        </Link>
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>

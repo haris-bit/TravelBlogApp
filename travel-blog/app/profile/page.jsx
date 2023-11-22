@@ -11,6 +11,9 @@ import Sidebar from '@app/components/sidebar/Sidebar';
 
 
 const Profile = () => {
+    const [firstName, setFirstName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [bio, setBio] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleFileChange = (e) => {
@@ -24,22 +27,26 @@ const Profile = () => {
         }
     };
 
+    // console.log(email);
+
     return (
         <div
             className='flex flex-col w-full h-full bg-[#f4f4f4]'
         >
-            <Navbar />
+            <Navbar
+            />
             <div
                 className='flex flex-row h-full ml-[300px] '
             >
-                <Sidebar />
+                <Sidebar
+                />
                 <div className=' mt-20 flex flex-col w-[700px] min-h-screen mb-20 bg-[#f4f4f4] text-black '>
                     <UserNavbar />
                     {/* div for first name and surname */}
                     <div className='flex flex-col w-full h-4/6 ml-12'>
                         <h1 className='font-semibold '>Customize profile information</h1>
 
-                        <h2 className='mt-4'>Profile name</h2>
+                        <h2 className='mt-4'>Profile name </h2>
 
                         <p className='text-sm text-gray-500 mt-4'>
                             *Display name will not change your username

@@ -28,16 +28,14 @@ const LogIn = () => {
 
         // check if login is successful using re
         if (res.data.success) {
-            // Debugging statements
-            console.log('Login successful. Redirecting to home page.');
-            router.push('/?email=' + email);
+            window.localStorage.setItem("userEmail", email);
+            router.push('/');
         } else {
             // show error message
             console.log(res.data.message);
             console.log(email);
             console.log(password);
             alert("Error: " + res.data.message);
-
         }
     };
 

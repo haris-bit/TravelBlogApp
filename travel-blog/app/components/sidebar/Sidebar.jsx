@@ -10,6 +10,9 @@ import { RiQuestionAnswerLine } from 'react-icons/ri'
 import { IoDocumentText } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { BiSolidHelpCircle } from "react-icons/bi";
+// logout icon from react-icons
+import { RiLogoutBoxRLine } from 'react-icons/ri'
+
 import Link from 'next/link'
 
 
@@ -78,13 +81,16 @@ const Sidebar = () => {
                 <div
 
                 >
-                    <Link href='/profile'
+                    {/* here how can I pass the email */}
+                    <Link
+                        href='/profile'
                         className='flex items-center 
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
                 gap-4
                 px-6 py-2
                 cursor-pointer
+                
                 '
                     >
                         <BiUserCircle
@@ -186,6 +192,20 @@ const Sidebar = () => {
                     <BiSolidHelpCircle className='text-xl' />
                     Help
                 </span>
+
+                <Link href='/login'
+                >
+                    <span
+                        className='text-normal flex items-center gap-2  
+                hover:bg-[#E9E9E9] cursor-pointer rounded-md
+                px-4 py-2
+                    '
+                    >
+                        <RiLogoutBoxRLine className='text-xl' />
+                        Log Out
+                    </span>
+                </Link>
+
             </div>
         </div >
     )
