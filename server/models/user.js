@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Country is required!"],
   },
+  bio: {
+    type: String,
+    maxlength: [200, "Bio should be less than 200 characters!"],
+  },
   birthdate: {
     month: {
       type: String,
@@ -35,6 +39,10 @@ const userSchema = new mongoose.Schema({
       type: Number,
       required: [true, "Year is required!"],
     },
+  },
+  profileImage: {
+    type: String,
+    // You can use this field to store the URL or file path of the profile image
   },
 });
 
