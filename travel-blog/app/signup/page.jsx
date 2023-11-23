@@ -34,6 +34,9 @@ const SignUp = () => {
 
 
     const handleSignUp = async () => {
+        const profileImageBlob = dataURLtoBlob(profileImage);
+        const formData = new FormData();
+
         // check if any field is empty
         if (
             firstName === '' ||
@@ -69,19 +72,23 @@ const SignUp = () => {
             return
         }
 
-        // send request to server
-        const res = await axios.post('http://localhost:5000/register', {
-            firstName,
-            surname,
-            email,
-            password,
-            country,
-            bio,
-            monthOfBirth,
-            dayOfBirth,
-            yearOfBirth,
-            profileImage,
-        })
+        formData.append('profileImage', profileImageBlob);
+        formData.append('firstName', firstName);
+        formData.append('surname', surname);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('country', country);
+        formData.append('bio', bio);
+        formData.append('monthOfBirth', monthOfBirth);
+        formData.append('dayOfBirth', dayOfBirth);
+        formData.append('yearOfBirth', yearOfBirth);
+
+        // Send request to server with FormData
+        const res = await axios.post('http://localhost:5000/register', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
         // check if sign up is successful
         if (res.data.success) {
@@ -92,6 +99,20 @@ const SignUp = () => {
             alert('Error: ' + res.data.message)
         }
     }
+
+    // / Helper function to convert data URL to Blob
+    function dataURLtoBlob(dataURL) {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
+
 
     useEffect(() => {
         // Fetch countries from the REST Countries API
@@ -128,6 +149,7 @@ const SignUp = () => {
                 >
                     TravelBlog
                 </div>
+
 
                 {/* div for first name and surname */}
                 <div
