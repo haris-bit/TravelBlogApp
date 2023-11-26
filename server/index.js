@@ -9,6 +9,8 @@ const path = require("path");
 const { Console } = require("console");
 
 
+const uploadRoute = require('./controller/routeUpload');
+
 // const mongoose = require("mongoose");
 
 const app = express();
@@ -40,6 +42,12 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+
+
+
+//the route for image upload using cloudinary
+app.use("/api/users" , uploadRoute);
 
 
 // api to register a new account
