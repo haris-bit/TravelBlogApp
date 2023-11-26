@@ -22,19 +22,14 @@ const SignUp = () => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setProfileImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-        // console.log(file);
+        setProfileImage(file);
+        console.log(file);
     };
 
 
-    const handleSignUp = async () => {
-        const profileImageBlob = dataURLtoBlob(profileImage);
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        console.log('Form Started');
         const formData = new FormData();
 
         // check if any field is empty
@@ -72,7 +67,8 @@ const SignUp = () => {
             return
         }
 
-        formData.append('profileImage', profileImageBlob);
+        // first convert the data URL to a Blob object
+        formData.append('profileImage', profileImage);
         formData.append('firstName', firstName);
         formData.append('surname', surname);
         formData.append('email', email);
@@ -84,33 +80,37 @@ const SignUp = () => {
         formData.append('yearOfBirth', yearOfBirth);
 
         // Send request to server with FormData
-        const res = await axios.post('http://localhost:5000/register', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        try {
 
-        // check if sign up is successful
-        if (res.data.success) {
-            window.location.href = '/login'
-        } else {
-            // show error message
-            console.log(res.data.message)
-            alert('Error: ' + res.data.message)
-        }
-    }
+            const response = await fetch("http://localhost:5001/api/create", {
+                method: "POST",
+                body: formData,
+            });
 
-    // / Helper function to convert data URL to Blob
-    function dataURLtoBlob(dataURL) {
-        const arr = dataURL.split(',');
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+            if (response.ok) {
+                console.log("User created successfully!");
+                // go to the login page
+                window.location.href = '/login'
+            } else {
+                console.log("Failed to submit data");
+            }
+            console.log('First Name: ', firstName);
+            console.log('Surname: ', surname);
+            console.log('Email: ', email);
+            console.log('Password: ', password);
+            console.log('Country: ', country);
+            console.log('Bio: ', bio);
+            console.log('Month of Birth: ', monthOfBirth);
+            console.log('Day of Birth: ', dayOfBirth);
+            console.log('Year of Birth: ', yearOfBirth);
+            console.log('Profile Image: ', profileImage);
+
+
+        } catch (error) {
+            console.log(error);
         }
-        return new Blob([u8arr], { type: mime });
+
+        console.log('Form Ended');
     }
 
 
@@ -127,6 +127,9 @@ const SignUp = () => {
 
 
     return (
+        <form
+            onSubmit={handleSignUp}
+        >
         <div
             className='w-full min-h-screen flex flex-col justify-center items-center bg-slate-900
             text-black
@@ -359,29 +362,12 @@ const SignUp = () => {
                     </p>
 
                     {/* Image upload */}
-                    <label htmlFor='imageUpload' className='cursor-pointer mt-4
-                border border-gray-300 rounded-full w-20 h-20 flex items-center justify-center
-                '>
-                        {profileImage ? (
-                            <Image
-                                src={profileImage}
-                                alt='Selected'
-                                className='w-20 h-20 object-cover rounded-full'
-                                width={80}
-                                height={80}
-                            />
-                        ) : (
-                            <
-                                GrCamera
-                            />
-                        )}
-                    </label>
+
                     <input
                         type='file'
                         name='profileImage'
                         id='imageUpload'
-                        accept='image/*'
-                        className='hidden'
+                            accept='image/*'
                         onChange={handleFileChange}
                     />
                 </div>
@@ -439,13 +425,15 @@ const SignUp = () => {
                 <div
                     className='w-full flex flex-col items-center justify-center mb-2'
                 >
-                    <button
-                        className='w-[200px] h-[40px] rounded-full bg-[#00a3e8] text-white focus:outline-none mt-4'
-                        onClick={handleSignUp}
-                    >
-                        Sign Up
-                        &raquo;
-                    </button>
+                        <input
+                            type='submit'
+                            className='w-[200px] h-[40px] rounded-full bg-[#00a3e8] text-white focus:outline-none mt-4
+                            cursor-pointer
+                            '
+                            value='Sign Up'
+                        />
+                        {/* Sign Up
+                        &raquo; */}
 
                     {/* alread have an account */}
                     <div
@@ -467,7 +455,8 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </form>
     )
 }
 

@@ -21,13 +21,15 @@ const LogIn = () => {
         }
 
         // send request to server
-        const res = await axios.post("http://localhost:5000/login", {
-            email,
-            password,
+        const res = await axios.post("http://localhost:5001/login", {
+            email: email,
+            password: password,
         });
 
+        console.log(res.data);
+
         // check if login is successful using re
-        if (res.data.success) {
+        if (res.data) {
             window.localStorage.setItem("userEmail", email);
             router.push('/');
         } else {
@@ -35,7 +37,7 @@ const LogIn = () => {
             console.log(res.data.message);
             console.log(email);
             console.log(password);
-            alert("Error: " + res.data.message);
+            alert(res.data.message); 
         }
     };
 
@@ -78,7 +80,8 @@ const LogIn = () => {
                 <div className="mb-6
                 flex justify-center items-center
                 ">
-                    <button className="w-[154px] h-[54px] rounded-full bg-[#00a3e8] text-white focus:outline-none"
+                    <button
+                        className="w-[154px] h-[54px] rounded-full bg-[#00a3e8] text-white focus:outline-none"
                         onClick={handleLogin}
                     >
                         Login

@@ -4,13 +4,50 @@ import Navbar from '@app/components/navbar/Navbar';
 import React, { useState } from 'react';
 import UserNavbar from '../usernav/page';
 import Sidebar from '@app/components/sidebar/Sidebar';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 
 const Account = () => {
+    const [user, setUser] = useState({});
+    const [email, setEmail] = useState('');
     const [selectedGender, setSelectedGender] = useState(null);
 
     const handleGenderChange = (gender) => {
         setSelectedGender(gender);
+    };
+
+    useEffect(() => {
+        const email = window.localStorage.getItem('userEmail');
+        setEmail(email);
+    }, [])
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5001/api/user/${email}`);
+                setUser(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, [email]);
+
+
+    const applyChanges = async () => {
+        console.log('Applying changes...');
+        console.log(user.email);  // Use user object directly
+        try {
+            window.localStorage.setItem('userEmail', user.email);
+            const response = await axios.put(`http://localhost:5001/api/user/account/${email}`, user);
+            console.log(response.data);
+            alert('Changes applied successfully!');
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
     };
 
     return (
@@ -41,7 +78,8 @@ const Account = () => {
                                 type='email'
                                 placeholder='Email address'
                                 className='w-full h-12 border border-gray-300 rounded-md p-2 bg-transparent outline-none mt-4'
-                                value="jarenbuel@gmail.com"
+                                value={user.email || ''}
+                                onChange={(e) => setUser({ ...user, email: e.target.value })}
                             />
                         </span>
 
@@ -104,6 +142,7 @@ const Account = () => {
                     <div className='flex flex-row  ml-12 mt-12 mb-8'>
                         <button
                             className='bg-gray-600 text-white rounded-full px-6 py-2'
+                            onClick={applyChanges}
                         >
                             Save changes
                         </button>

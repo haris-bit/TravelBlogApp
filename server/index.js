@@ -4,8 +4,9 @@ const cors = require("cors");
 const express = require("express");
 const connectDB = require("./connectDB");
 const User = require("./models/user");
-const UserProfile = require("./models/userProfile");
 const multer = require("multer");
+const path = require("path");
+const { Console } = require("console");
 
 
 // const mongoose = require("mongoose");
@@ -15,23 +16,25 @@ const PORT = process.env.PORT || 8000;
 
 
 
-
 // Setting up our Middleware
 connectDB();
 app.use(cors());
-app.use(express.urlencoded( { extended: true } ));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 
 // import multer configuration code
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, path.join(__dirname, "uploads"));
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now();
     cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
@@ -39,44 +42,153 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// User.create(req.body)
-// .then((UserModel) => res.json(UserModel))
-// .catch((err) => res.json(err));
-
-
 // api to register a new account
 app.post("/api/create", upload.single("profileImage"), async (req, res) => {
   try {
-
-    console.log(req.body);
-    console.log(req.file);
-
-    const newUser = new User({
+    const newUser = {
       firstName: req.body.firstName,
-      surName: req.body.surName,
-      email: req.body.email, // Add the email field
-      password: req.body.password, // Add the password field
-      country: req.body.country, // Add the country field
+      surname: req.body.surname,
+      email: req.body.email,
+      password: req.body.password,
+      country: req.body.country,
       bio: req.body.bio,
-      birthdate: {
-        month: req.body.birthdate.month,
-        day: req.body.birthdate.day,
-        year: req.body.birthdate.year,
-      },
-      profileImage: req.file.filename,
-    });
+      monthOfBirth: req.body.monthOfBirth,
+      dayOfBirth: req.body.dayOfBirth,
+      yearOfBirth: req.body.yearOfBirth,
+      profileImage: req.file.path,
+    };
 
+    // Add data validation here (if needed)
 
-    await newUser.save();
-    res.status(201).json({ message: "User created successfully" });
+    const data = await User.create(newUser);
+    res.json(data);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while creating the new user" });
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ error: "An error occurred: " + error.message });
   }
 });
 
 
+// get the user based on the email
+app.get("/api/user/:email", async (req, res) => {
+  try {
+    const emailParam = req.params.email;
+    // find the user based on the email
+
+    User.findOne({ email: emailParam }).then((user) => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.json("No entry exists");
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching the user." });
+  }
+});
 
 
+// first get the first name, surname, bio and profile image by searching the user and then update the user profile first name, surname, bio and profile image
+
+app.put("/api/user/profile/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    // Assuming your User model has a method like findByEmail to find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    else {
+      const userId = user._id;
+      const firstName = req.body.firstName;
+      const surname = req.body.surname;
+      const bio = req.body.bio;
+
+      console.log("Details from the form");
+      console.log("First name is " + firstName);
+      console.log("Surname is " + surname);
+      console.log("Bio is " + bio);
+
+      User.findByIdAndUpdate(userId, { firstName: firstName, surname: surname, bio: bio }, { new: true })
+        .then((user) => {
+          console.log("User updated successfully");
+          res.json(user);
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+app.put("/api/user/account/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    // Assuming your User model has a method like findByEmail to find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    else {
+      const email = req.body.email;
+      const userId = user._id;
+
+      console.log("Details from the form");
+      console.log("Email is " + email);
+
+      User.findByIdAndUpdate(userId, { email: email }, { new: true })
+        .then((user) => {
+          console.log("User updated successfully");
+          res.json(user);
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    }
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+app.put("/api/user/security/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    // Assuming your User model has a method like findByEmail to find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    else {
+      const password = req.body.password;
+      const userId = user._id;
+
+      console.log("Details from the form");
+      console.log("Password is " + password);
+
+      User.findByIdAndUpdate(userId, { password: password }, { new: true })
+        .then((user) => {
+          console.log("User updated successfully");
+          res.json(user);
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    }
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
 
 
 
@@ -94,17 +206,19 @@ app.get("/api/users", async (req, res) => {
 // api to login
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  User.findOne({email: email}).then(user => {
-    if(user) {
-      if (user.password === password) {
-        res.json("Success");
+  User.findOne({ email: email })
+    .then((user) => {
+      if (user) {
+        if (password === user.password) {
+          res.json(user);
+        } else {
+          res.json({ message: 'Password does not match' });
+        }
       } else {
-        res.json("The password was incorrect");
+        res.json({ message: 'User not found' });
       }
-    } else {
-      res.json("No entry exists");
     }
-  })
+    )
 })
 
 
