@@ -5,10 +5,10 @@ import Sidebar from '../components/sidebar/Sidebar'
 import PostForm from '../components/postcreate/PostForm'
 import SinglePost from '@app/singlepost/page'
 import { useEffect, useState } from 'react'
+import PostFeed from '@app/feed/page';
 
 
 const MainPage = () => {
-
     return (
         <div
             className='flex flex-col w-full min-h-screen bg-[#F4F4F4] text-black '
@@ -23,10 +23,7 @@ const MainPage = () => {
                     className='flex flex-col w-full h-full'
                 >
                     <PostForm />
-                    <SinglePost />
-                    <SinglePost />
-                    <SinglePost />
-
+                    <PostFeed />
                 </div>
             </div>
         </div>

@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
-
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
@@ -13,33 +12,30 @@ const LogIn = () => {
     const router = useRouter();
 
     const handleLogin = async () => {
+        try {
+            const res = await axios.post("http://localhost:5001/login", {
+                email,
+                password,
+            });
 
-        // check if email and password are not empty
-        if (email === "" || password === "") {
-            alert("Email and password cannot be empty");
-            return;
+            if (res.data) {
+                alert("Login successful");
+                window.localStorage.setItem("userEmail", email);
+                router.push('/');
+            } else {
+                alert("Login failed");
+            }
         }
-
-        // send request to server
-        const res = await axios.post("http://localhost:5001/login", {
-            email: email,
-            password: password,
-        });
-
-        console.log(res.data);
-
-        // check if login is successful using re
-        if (res.data) {
-            window.localStorage.setItem("userEmail", email);
-            router.push('/');
-        } else {
-            // show error message
-            console.log(res.data.message);
-            console.log(email);
-            console.log(password);
-            alert(res.data.message); 
+        catch (err) {
+            if (err.response && err.response.status === 404) {
+                alert("User not found");
+            } else {
+                console.log(err);
+                alert("An error occurred");
+            }
         }
     };
+
 
     return (
         <div className="w-full min-h-screen flex flex-col justify-center items-center bg-slate-900 text-black">
@@ -99,6 +95,5 @@ const LogIn = () => {
         </div>
     );
 };
-
 
 export default LogIn;

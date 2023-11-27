@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link';
 import { useState, useEffect } from 'react'
 import axios from 'axios';
+// import user icon from react icons
+import { FaUserCircle } from "react-icons/fa";
 
 
 const Navbar = () => {
@@ -85,14 +87,12 @@ const Navbar = () => {
                                         height={24}
                                     />
                                 </div>
-                                <div className="bg-[#383838] self-start flex flex-row gap-20 w-[274px] h-12 items-center pt-2 px-2 rounded-[26.5px]">
-                                    <div className="self-start flex flex-row mt-px gap-4 w-1/2 items-start">
+                                <div className="bg-[#383838] self-start flex flex-row gap-20 w-[274px] h-12 pt-2 px-2 rounded-[26.5px]">
+                                    <div className="self-start flex flex-row mt-px gap-4 w-full items-start">
 
-                                        <Image
-                                            src={user.profilePicture ? user.profilePicture : 'https://file.rendit.io/n/5A9GqNmRzTfcQrrAfMFK.svg'}
-                                            alt={`${user.firstName}'s Profile`}
-                                            width={40} // Adjust the width as needed
-                                            height={80} // Adjust the height as needed
+                                        <
+                                            FaUserCircle
+                                            className='text-white w-6 h-6 ml-2 mt-1 '
                                         />
                                         <div className="flex font-['Poppins'] font-medium text-white mt-1 gap-2 ">
                                             <span>
