@@ -128,6 +128,7 @@ app.post("/api/create", upload.single("profileImage"), async (req, res) => {
 
 
 // get the user based on the email
+
 app.get("/api/user/:email", async (req, res) => {
   try {
     const emailParam = req.params.email;
