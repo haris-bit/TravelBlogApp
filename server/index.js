@@ -7,6 +7,9 @@ const User = require("./models/user");
 const multer = require("multer");
 const path = require("path");
 const { Console } = require("console");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+
 
 
 const uploadRoute = require('./controller/routeUpload');
@@ -14,7 +17,7 @@ const uploadRoute = require('./controller/routeUpload');
 // const mongoose = require("mongoose");
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5001;
 
 
 
@@ -50,9 +53,19 @@ const upload = multer({ storage: storage });
 app.use("/api/users" , uploadRoute);
 
 
-// api to register a new account
+
+
 app.post("/api/create", upload.single("profileImage"), async (req, res) => {
   try {
+    // Upload the image to Cloudinary
+    const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+
+    // Check Cloudinary upload result
+    if (!cloudinaryUpload || !cloudinaryUpload.secure_url) {
+      throw new Error('Cloudinary upload failed');
+    }
+
+    // Create a new user with Cloudinary URL
     const newUser = {
       firstName: req.body.firstName,
       surname: req.body.surname,
@@ -63,18 +76,55 @@ app.post("/api/create", upload.single("profileImage"), async (req, res) => {
       monthOfBirth: req.body.monthOfBirth,
       dayOfBirth: req.body.dayOfBirth,
       yearOfBirth: req.body.yearOfBirth,
-      profileImage: req.file.path,
+      profileImage: cloudinaryUpload.secure_url, // Store Cloudinary URL in profileImage field
     };
 
     // Add data validation here (if needed)
 
+    // Save user data to MongoDB
     const data = await User.create(newUser);
+
+    // Respond with the user data (or whatever response you need)
     res.json(data);
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({ error: "An error occurred: " + error.message });
+  } finally {
+    // Optionally, you may want to delete the local file after uploading to Cloudinary
+    if (req.file && req.file.path) {
+      fs.unlinkSync(req.file.path);
+    }
   }
 });
+
+
+
+/** OLD /api/create API End point    **/
+// // api to register a new account
+// app.post("/api/create", upload.single("profileImage"), async (req, res) => {
+//   try {
+//     const newUser = {
+//       firstName: req.body.firstName,
+//       surname: req.body.surname,
+//       email: req.body.email,
+//       password: req.body.password,
+//       country: req.body.country,
+//       bio: req.body.bio,
+//       monthOfBirth: req.body.monthOfBirth,
+//       dayOfBirth: req.body.dayOfBirth,
+//       yearOfBirth: req.body.yearOfBirth,
+//       profileImage: req.file.path,
+//     };
+
+//     // Add data validation here (if needed)
+
+//     const data = await User.create(newUser);
+//     res.json(data);
+//   } catch (error) {
+//     console.error(error); // Log the error for debugging
+//     res.status(500).json({ error: "An error occurred: " + error.message });
+//   }
+// });
 
 
 // get the user based on the email

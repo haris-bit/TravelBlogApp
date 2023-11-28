@@ -15,6 +15,7 @@ export const connectToDB = async () => {
       dbName: "travel_blog",
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      writeConcern: { w: 'majority' } 
     });
 
     isConnected = true;
