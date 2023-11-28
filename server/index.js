@@ -4,6 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const connectDB = require("./connectDB");
 const User = require("./models/user");
+const Post = require("./models/post");
 const multer = require("multer");
 const path = require("path");
 const { Console } = require("console");
@@ -260,6 +261,38 @@ app.get("/api/users", async (req, res) => {
     res.status(500).json({ error: "An error occured while fetching users. "});
   }
 });
+
+
+// api to find all posts (GET)
+app.get("/api/posts", async (req, res) => {
+  try {
+    const data = await Post.find({});
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "An error occured while fetching posts. " });
+  }
+});
+
+
+app.put("/like-post/:postId", async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    Post.findByIdAndUpdate(postId, { $inc: { likes: 1 } }, { new: true })
+      .then((post) => {
+        console.log("Post updated successfully");
+        res.json(post);
+      })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+
+
+
+
 
 
 // api to login
