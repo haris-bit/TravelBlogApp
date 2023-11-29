@@ -14,6 +14,7 @@ const CreatePost = () => {
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [attachment, setAttachment] = useState(null);
+    const [user, setUser] = useState({});
 
     // get user email from local storage
     useEffect(() => {
@@ -26,8 +27,7 @@ const CreatePost = () => {
         fetch(`http://localhost:5001/api/user/${email}`)
             .then((res) => res.json())
             .then((data) => {
-                setFirstName(data.firstName);
-                setSurname(data.surname);
+                setUser(data);
             });
     }, [email]);
 
@@ -131,8 +131,8 @@ const CreatePost = () => {
                 <div className="relative w-16 h-16 mt-1">
                     <div className="absolute  rounded-full border border-blue-500 flex items-center justify-center overflow-hidden ">
                         <Image
-                            src="/profile.jpeg"
-                            alt="Profile Image"
+                            src={user.profileImage}
+                            alt={user.firstName}
                             width={65}
                             height={10}
                             className="rounded-full w-16 h-16 object-cover"
@@ -140,11 +140,11 @@ const CreatePost = () => {
                     </div>
                 </div>
 
-                <span className="mt-2 text-sm font-semibold">Jaren Buel</span>
+                <span className="mt-2 text-sm font-semibold">{user.firstName + ' '+ user.surname}</span>
                 <span
                     className='mt-1 text-sm text-gray-500 leading-loose tracking-wide '
                 >
-                    Content marketing professional at BlackSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.
+                    {user.bio}
                 </span>
 
                 <h2

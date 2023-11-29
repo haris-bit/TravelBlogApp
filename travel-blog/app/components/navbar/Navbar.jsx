@@ -91,7 +91,7 @@ const Navbar = () => {
                                     <div className="self-start flex flex-row mt-px gap-4 w-full items-start">
 
                                         <
-                                            FaUserCircle
+                                            Image src={user.profileImage} alt={`user.firstName`} width={15} height={15}
                                             className='text-white w-6 h-6 ml-2 mt-1 '
                                         />
                                         <div className="flex font-['Poppins'] font-medium text-white mt-1 gap-2 ">

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 const SinglePost = ({ post }) => {
     console.log(post);
     // destructure post object
-    const { username, description, attachment, likes, comments, createdAt } = post;
+    const { username, email, description, attachment, likes, comments, createdAt} = post
 
     const timeAgo = () => {
         const timeNow = new Date();
