@@ -254,24 +254,66 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+
+
+
 app.post("/api/post/create", upload.single("attachment"), async (req, res) => {
   try {
-    console.log("Inside the post create api");
+    // Upload the attachment to Cloudinary
+    const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
+
+    // Check Cloudinary upload result
+    if (!cloudinaryUpload || !cloudinaryUpload.secure_url) {
+      throw new Error('Cloudinary upload failed');
+    }
+
+    // Create a new post with Cloudinary URL
     const newPost = {
       username: req.body.username,
       email: req.body.email,
       description: req.body.description,
-      attachment: req.file.path
+      attachment: cloudinaryUpload.secure_url, // Store Cloudinary URL in attachment field
     };
 
+    // Add data validation here (if needed)
 
+    // Save post data to MongoDB
     const data = await Post.create(newPost);
+
+    // Respond with the post data (or whatever response you need)
     res.json(data);
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({ error: "An error occurred: " + error.message });
+  } finally {
+    // Optionally, you may want to delete the local file after uploading to Cloudinary
+    if (req.file && req.file.path) {
+      fs.unlinkSync(req.file.path);
+    }
   }
 });
+
+
+
+/** This is the OLD API **/
+// app.post("/api/post/create", upload.single("attachment"), async (req, res) => {
+//   try {
+//     console.log("Inside the post create api");
+//     const newPost = {
+//       username: req.body.username,
+//       email: req.body.email,
+//       description: req.body.description,
+//       attachment: req.file.path
+//     };
+
+
+//     const data = await Post.create(newPost);
+//     res.json(data);
+//   } catch (error) {
+//     console.error(error); // Log the error for debugging
+//     res.status(500).json({ error: "An error occurred: " + error.message });
+//   }
+// });
 
 
 // api to find all posts (GET)

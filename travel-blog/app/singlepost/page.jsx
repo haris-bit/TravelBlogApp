@@ -14,6 +14,7 @@ const SinglePost = ({ post }) => {
     console.log(post);
     // destructure post object
     const { username, email, description, attachment, likes, comments, createdAt} = post
+    const [user, setUser] = useState({});
 
     const timeAgo = () => {
         const timeNow = new Date();
@@ -75,6 +76,17 @@ const SinglePost = ({ post }) => {
     };
 
 
+    
+        // get user name using email from local storage and then call api to get the user details
+        useEffect(() => {
+            fetch(`http://localhost:5001/api/user/${email}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    setUser(data);
+                });
+        }, [email]);
+
+
     return (
         <div
             className='flex flex-col w-[500px] h-[520px] bg-white rounded-2xl shadow-md mt-4
@@ -85,7 +97,7 @@ const SinglePost = ({ post }) => {
                 className='flex flex-row items-center w-full  h-24 px-5 py-2'
             >
                 <Image
-                    src='/profile.jpeg'
+                    src={user.profileImage}
                     alt='profile picture'
                     width={120}
                     height={140}
@@ -116,7 +128,7 @@ const SinglePost = ({ post }) => {
                 className='flex flex-row items-center w-full h-40 px-5 py-2'
             >
                 <Image
-                    src='/blogimg.png'
+                    src={attachment}
                     alt='profile picture'
                     width={320}
                     height={120}
