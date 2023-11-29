@@ -348,6 +348,52 @@ app.put("/like-post/:postId", async (req, res) => {
 });
 
 
+// api for creating a comment
+app.post("/api/post/comment/:postId/:username", async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const username = req.params.username;
+    const comment = req.body.comment;
+
+    const newComment = {
+      username: username,
+      comment: comment
+    };
+
+    Post.findByIdAndUpdate(postId, { $push: { comments: newComment } }, { new: true })
+      .then((post) => {
+        console.log("Comment added successfully");
+        res.json(post);
+      }
+      )
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+
+// get all comments for a post using the post id
+app.get("/api/post/comments/:postId", async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    Post.findById(postId)
+      .then((post) => {
+        console.log("Comments fetched successfully");
+        res.json(post.comments);
+      })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+
+
+
+
 
 
 

@@ -13,8 +13,14 @@ import { useEffect, useState } from 'react';
 const SinglePost = ({ post }) => {
     console.log(post);
     // destructure post object
-    const { username, email, description, attachment, likes, comments, createdAt} = post
+    const { username, email, description, attachment, likes, comments, createdAt } = post
     const [user, setUser] = useState({});
+
+
+    const [showComments, setShowComments] = useState(false);
+    const [postComments, setPostComments] = useState([]);
+    const [comment, setComment] = useState('');
+
 
     const timeAgo = () => {
         const timeNow = new Date();
@@ -76,20 +82,65 @@ const SinglePost = ({ post }) => {
     };
 
 
-    
-        // get user name using email from local storage and then call api to get the user details
-        useEffect(() => {
-            fetch(`http://localhost:5001/api/user/${email}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    setUser(data);
-                });
-        }, [email]);
+    // get user name using email from local storage and then call api to get the user details
+    useEffect(() => {
+        fetch(`http://localhost:5001/api/user/${email}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setUser(data);
+            });
+    }, [email]);
+
+    // for comments
+    const handleShowComments = async () => {
+        try {
+            // Fetch comments from the backend API
+            const res = await fetch(`http://localhost:5001/api/post/comments/${post._id}`);
+            if (res.ok) {
+                const comments = await res.json();
+                setPostComments(comments);
+                setShowComments(true);
+                console.log(comments);
+            } else {
+                console.error('Error fetching comments:', res.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
+    };
+
+    const handleHideComments = () => {
+        setShowComments(false);
+    };
+
+    const handleAddComment = async () => {
+        try {
+            // Make a request to create a new comment with post id and username
+            const res = await fetch(`http://localhost:5001/api/post/comment/${post._id}/${username}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ comment }),
+            });
+
+            if (res.ok) {
+                // If the request is successful, update the local state and play the sweet alert sound
+                setComment('');
+                playSweetAlert();
+            } else {
+                // Handle errors if the request fails
+                console.error('Error creating comment:', res.statusText);
+            }
+        } catch (error) {
+            console.error('Error creating comment:', error);
+        }
+    };
 
 
     return (
         <div
-            className='flex flex-col w-[500px] h-[520px] bg-white rounded-2xl shadow-md mt-4
+            className='flex flex-col w-[500px] min-h-[520px] bg-white rounded-2xl shadow-md mt-4
             ml-[345px] mb-2 pb-4'
         >
             {/* div for image, name, time ago and three dots */}
@@ -125,12 +176,12 @@ const SinglePost = ({ post }) => {
 
             {/* div for image */}
             <div
-                className='flex flex-row items-center w-full h-40 px-5 py-2'
+                className='flex flex-row items-center justify-center w-full h-40 px-5 py-2'
             >
                 <Image
                     src={attachment}
                     alt='profile picture'
-                    width={320}
+                    width={340}
                     height={120}
                     className=' rounded-md object-cover w-full h-64 md:w-96 lg:w-450px mt-40'
                 />
@@ -152,20 +203,13 @@ const SinglePost = ({ post }) => {
                 </span>
                 {/* comments */}
                 <span
-                    className='px-3 py-2 rounded-full cursor-pointer bg-gray-200
-                    flex flex-row items-center justify-center
-                    '
+                    className='px-3 py-2 rounded-full cursor-pointer bg-gray-200 flex flex-row justify-center'
+                    onClick={showComments ? handleHideComments : handleShowComments}
                 >
-                    <FaRegComment
-                        className='text-xl mr-2'
-                    />
-                    <input
-                        type='text'
-                        placeholder='Comment'
-                        className='outline-none bg-transparent'
-                    />
-
+                    <FaRegComment className='text-xl mr-2' />
+                    <span className='text-sm font-semibold'>{postComments.length} Comments</span>
                 </span>
+
                 <span
                     className='px-3 py-2 rounded-full cursor-pointer bg-gray-200'
                 >
@@ -174,6 +218,38 @@ const SinglePost = ({ post }) => {
                     />
                 </span>
             </div>
+            {showComments && (
+                <div className='px-5'>
+                    {postComments.map((comment) => (
+                        <div key={comment._id} className='mb-2'>
+                            <span className='font-semibold'>{comment.username}:</span> {comment.comment}
+                        </div>
+                    ))}
+
+
+                    {/* input to add the comments */}
+                    <div className='flex flex-row items-center w-full h-10 px-5 py-2
+                mt-16 justify-between gap-3
+                '>
+                        <input
+                            type='text'
+                            placeholder='Add a comment...'
+                            className='w-full h-10 px-5 py-2 rounded-full bg-gray-200
+                            outline-none
+                            '
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                        <button
+                            className='text-sm font-semibold text-blue-500'
+                            onClick={handleAddComment}
+                        >
+                            Post
+                        </button>
+                    </div>
+
+                </div>
+            )}
 
         </div>
     )

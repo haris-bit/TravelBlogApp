@@ -63,26 +63,10 @@ const Navbar = () => {
                             <div className="self-start flex flex-row gap-6 w-2/5 items-center">
                                 <div className="flex flex-row gap-5 items-start">
                                     <Image
-                                        src="https://file.rendit.io/n/QPo0hJt96ZgAi7KD4Lep.svg"
-                                        alt="Addcircle"
-                                        id="Addcircle"
-                                        className="w-6 shrink-0"
-                                        width={24}
-                                        height={24}
-                                    />
-                                    <Image
-                                        src="https://file.rendit.io/n/wG2yNBGF3Zc4f8iQVy7B.svg"
-                                        alt="ImageNavigateNext icon"
-                                        id="Trendingup"
-                                        className="mr-px w-6 shrink-0"
-                                        width={24}
-                                        height={24}
-                                    />
-                                    <Image
                                         src="https://file.rendit.io/n/5A9GqNmRzTfcQrrAfMFK.svg"
                                         alt="Notifications"
                                         id="Notifications"
-                                        className="w-6 shrink-0"
+                                        className="w-6 shrink-0 ml-32 mr-12 "
                                         width={24}
                                         height={24}
                                     />
@@ -92,7 +76,9 @@ const Navbar = () => {
 
                                         <
                                             Image src={user.profileImage} alt={`user.firstName`} width={15} height={15}
-                                            className='text-white w-6 h-6 ml-2 mt-1 '
+                                            className='text-white w-6 h-6 ml-2 mt-1 rounded-full
+                                            object-fit
+                                             '
                                         />
                                         <div className="flex font-['Poppins'] font-medium text-white mt-1 gap-2 ">
                                             <span>
