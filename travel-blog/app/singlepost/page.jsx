@@ -132,7 +132,7 @@ const SinglePost = ({ post }) => {
                     alt='profile picture'
                     width={320}
                     height={120}
-                    className='object-cover w-[450px] mt-40 '
+                    className=' rounded-md object-cover w-full h-64 md:w-96 lg:w-450px mt-40'
                 />
             </div>
 

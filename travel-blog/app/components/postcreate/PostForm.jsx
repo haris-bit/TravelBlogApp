@@ -28,6 +28,8 @@ const CreatePost = () => {
             .then((res) => res.json())
             .then((data) => {
                 setUser(data);
+                setFirstName(data.firstName);
+                setSurname(data.surname);
             });
     }, [email]);
 

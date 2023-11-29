@@ -259,6 +259,10 @@ app.get("/api/users", async (req, res) => {
 
 app.post("/api/post/create", upload.single("attachment"), async (req, res) => {
   try {
+
+    console.log("Inside the post create api");
+    console.log(req.body);
+
     // Upload the attachment to Cloudinary
     const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path);
 
