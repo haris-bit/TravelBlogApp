@@ -78,7 +78,7 @@ const SinglePost = ({ post }) => {
     return (
         <div
             className='flex flex-col w-[500px] h-[520px] bg-white rounded-2xl shadow-md mt-4
-            ml-[345px] mb-12 pb-4 '
+            ml-[345px] mb-2 pb-4'
         >
             {/* div for image, name, time ago and three dots */}
             <div

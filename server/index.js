@@ -11,8 +11,6 @@ const { Console } = require("console");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 
-
-
 const uploadRoute = require('./controller/routeUpload');
 
 // const mongoose = require("mongoose");
@@ -47,13 +45,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
-
-
 //the route for image upload using cloudinary
 app.use("/api/users" , uploadRoute);
-
-
 
 
 app.post("/api/create", upload.single("profileImage"), async (req, res) => {
@@ -251,7 +244,6 @@ app.put("/api/user/security/:email", async (req, res) => {
 });
 
 
-
 // api to find all users (GET)
 app.get("/api/users", async (req, res) => {
   try {
@@ -262,11 +254,31 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+app.post("/api/post/create", upload.single("attachment"), async (req, res) => {
+  try {
+    console.log("Inside the post create api");
+    const newPost = {
+      username: req.body.username,
+      email: req.body.email,
+      description: req.body.description,
+      attachment: req.file.path
+    };
+
+
+    const data = await Post.create(newPost);
+    res.json(data);
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ error: "An error occurred: " + error.message });
+  }
+});
+
 
 // api to find all posts (GET)
 app.get("/api/posts", async (req, res) => {
   try {
-    const data = await Post.find({});
+    // I want to sort the posts by the createdAt date
+    const data = await Post.find({}).sort({ createdAt: -1 });
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "An error occured while fetching posts. " });
