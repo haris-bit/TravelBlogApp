@@ -166,6 +166,22 @@ const SinglePost = ({ post }) => {
         }
     };
 
+    const [showFullDescription, setShowFullDescription] = useState(false);
+
+    // Display only 300 characters of the description initially
+    const displayedDescription = showFullDescription ? description : `${description.slice(0, 300)}...`;
+
+    // Toggle between showing full and partial description
+    const handleReadMore = () => {
+        setShowFullDescription(!showFullDescription);
+    };
+
+    // Toggle between showing full and partial description
+    const handleToggleDescription = () => {
+        setShowFullDescription(!showFullDescription);
+    };
+
+
 
     return (
         <div
@@ -197,10 +213,16 @@ const SinglePost = ({ post }) => {
                 />
             </div>
 
-            <span
-                className='text-sm ml-5 mr-5'
-            >
-                {description}
+            <span className='text-sm ml-5 mr-5'>
+                {displayedDescription}
+                {description.length > 300 && (
+                    <button
+                        className='text-blue-500 cursor-pointer ml-4'
+                        onClick={handleToggleDescription}
+                    >
+                        {showFullDescription ? 'Hide' : 'Read More'}
+                    </button>
+                )}
             </span>
 
             {/* div for image */}
@@ -236,8 +258,9 @@ const SinglePost = ({ post }) => {
                     onClick={showComments ? handleHideComments : handleShowComments}
                 >
                     <FaRegComment className='text-xl mr-2' />
-                    <span className='text-sm font-semibold'>{postComments.length} Comments</span>
+                    <span className='text-sm font-semibold'>{postComments.length || comments.length} Comments</span>
                 </span>
+
 
                 <span
                     className='px-3 py-2 rounded-full cursor-pointer bg-gray-200'

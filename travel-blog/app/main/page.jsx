@@ -2,10 +2,8 @@
 import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Sidebar from '../components/sidebar/Sidebar'
-import PostForm from '../components/postcreate/PostForm'
-import SinglePost from '@app/singlepost/page'
-import { useEffect, useState } from 'react'
 import PostFeed from '@app/feed/page';
+import ProfilePreview from '@app/components/preview/ProfilePreview';
 
 
 const MainPage = () => {
@@ -22,7 +20,7 @@ const MainPage = () => {
                 <div
                     className='flex flex-col w-full h-full'
                 >
-                    <PostForm />
+                    <ProfilePreview />
                     <PostFeed />
                 </div>
             </div>
