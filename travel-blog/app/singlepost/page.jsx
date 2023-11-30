@@ -21,6 +21,24 @@ const SinglePost = ({ post }) => {
     const [postComments, setPostComments] = useState([]);
     const [comment, setComment] = useState('');
 
+    const [commentUser, setCommentUser] = useState('');
+    const [commentEmail, setCommentEmail] = useState('');
+
+    // get user name using email from local storage and then call api to get the user details
+    useEffect(() => {
+        const email = window.localStorage.getItem('userEmail');
+        setCommentEmail(email);
+    }, [])
+
+    // get user name using email from local storage and then call api to get the user details
+    useEffect(() => {
+        fetch(`http://localhost:5001/api/user/${commentEmail}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setCommentUser(data.firstName + ' ' + data.surname);
+                console.log(data.firstName + ' ' + data.surname);
+            });
+    }, [commentEmail]);
 
     const timeAgo = () => {
         const timeNow = new Date();
@@ -116,16 +134,27 @@ const SinglePost = ({ post }) => {
     const handleAddComment = async () => {
         try {
             // Make a request to create a new comment with post id and username
-            const res = await fetch(`http://localhost:5001/api/post/comment/${post._id}/${username}`, {
+            const res = await fetch(`http://localhost:5001/api/post/comment/${post._id}/${commentUser}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ comment }),
+                body: JSON.stringify({
+                    comment: comment,
+                    username: commentUser,
+                }),
             });
 
             if (res.ok) {
                 // If the request is successful, update the local state and play the sweet alert sound
+                console.log('Comment created successfully');
+                console.log(comment);
+                console.log(commentUser);
+                const newComment = {
+                    comment: comment,
+                    username: commentUser,
+                };
+                setPostComments([...postComments, newComment]);
                 setComment('');
                 playSweetAlert();
             } else {
@@ -218,8 +247,9 @@ const SinglePost = ({ post }) => {
                     />
                 </span>
             </div>
+
             {showComments && (
-                <div className='px-5'>
+                <div className='px-5 mt-4 '>
                     {postComments.map((comment) => (
                         <div key={comment._id} className='mb-2'>
                             <span className='font-semibold'>{comment.username}:</span> {comment.comment}
