@@ -16,6 +16,7 @@ const CreatePost = () => {
     const [description, setDescription] = useState('');
     const [attachment, setAttachment] = useState(null);
     const [user, setUser] = useState({});
+    const [authorStatus, setAuthorStatus] = useState('');
 
     // Fetch user details on component mount
     useEffect(() => {
@@ -42,25 +43,43 @@ const CreatePost = () => {
         setAttachment(file);
     };
 
-    // Handle post creation
-    const handleCreatePost = () => {
-        const formData = new FormData();
-        formData.append('username', `${firstName} ${surname}`);
-        formData.append('email', email);
-        formData.append('description', description);
-        formData.append('attachment', attachment);
-
-        fetch('http://localhost:5001/api/post/create', {
-            method: 'POST',
-            body: formData,
-        })
+    useEffect(() => {
+        fetch(`http://localhost:5001/api/author/${email}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                setAuthorStatus(data.status);
             });
+    }, [email]);
 
-        alert('Post created successfully');
+
+    // Handle post creation
+    const handleCreatePost = () => {
+        if (authorStatus !== 'Approved') {
+            alert('You are not an approved author. Your status is ' + authorStatus);
+            window.location.href = '/';
+            return;
+        }
+        else {
+            const formData = new FormData();
+            formData.append('username', `${firstName} ${surname}`);
+            formData.append('email', email);
+            formData.append('description', description);
+            formData.append('attachment', attachment);
+
+            fetch('http://localhost:5001/api/post/create', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                });
+
+            alert('Post created successfully');
+        }
     };
+
+
 
     return (
         <div className="flex h-screen bg-gray-100">

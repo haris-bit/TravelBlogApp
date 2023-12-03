@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String,
   },
+  isAuthor: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

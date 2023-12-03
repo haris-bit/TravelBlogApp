@@ -32,7 +32,9 @@ const ProfilePreview = () => {
     };
 
     return (
-        <div>
+        <div
+            className='fixed right-4'
+        >
             {/* profile preview */}
             <div className="flex flex-col w-[350px] h-[400px] mt-4 absolute top-20 right-12 rounded-2xl shadow-md bg-white p-6">
                 <div className="relative w-16 h-16 mt-1">
@@ -84,8 +86,8 @@ const ProfilePreview = () => {
                             </Link>
 
                             {/* Become an Author option */}
-                            <a
-                                href="#"
+                            <Link
+                                href="/authorrequest"
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
                                 onClick={() => {
                                     // Handle the request to become an author
@@ -94,7 +96,7 @@ const ProfilePreview = () => {
                                 }}
                             >
                                 Become an Author
-                            </a>
+                            </Link>
                         </div>
                     )}
                 </div>

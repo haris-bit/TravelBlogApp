@@ -5,6 +5,7 @@ const express = require("express");
 const connectDB = require("./connectDB");
 const User = require("./models/user");
 const Post = require("./models/post");
+const AuthorRequest = require("./models/author");
 const multer = require("multer");
 const path = require("path");
 const { Console } = require("console");
@@ -373,6 +374,116 @@ app.post("/api/post/comment/:postId/:username", async (req, res) => {
   }
 });
 
+// api to post the request for author rights
+app.post("/api/author/request", async (req, res) => {
+  try {
+    const newRequest = {
+      userId: req.body.userId,
+      firstName: req.body.firstName,
+      surname: req.body.surname,
+      email: req.body.email,
+      profileImage: req.body.profileImage
+    }
+
+    console.log("Inside the author request api");
+    console.log(newRequest);
+
+    AuthorRequest.create(newRequest)
+      .then((request) => {
+        console.log("Request added successfully");
+        res.json(request);
+      }
+      )
+
+
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ error: "An error occurred: " + error.message });
+  }
+});
+
+app.get("/api/author/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    AuthorRequest.findOne({ email: email })
+      .then((request) => {
+        console.log("Request found successfully");
+        res.json(request);
+      }
+      )
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+
+// get the users who requested to get the rights of post creation
+app.get("/api/author/requests", async (req, res) => {
+  try {
+    const data = await AuthorRequest.find({});
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "An error occured while fetching users. " });
+  }
+});
+
+// api to give the author rights to the user
+app.put("/api/author/request/approve/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    AuthorRequest.findByIdAndUpdate(userId, {
+      $set: {
+        status: "Approved"
+      }
+    }, { new: true })
+      .then((user) => {
+        console.log("User request approved successfully");
+        res.json(user);
+      })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+// api to reject the author rights to the user
+app.put("/api/author/request/reject/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    AuthorRequest.findByIdAndUpdate(userId, {
+      $set: {
+        status: "Rejected"
+      }
+    }, { new: true })
+      .then((user) => {
+        console.log("User request rejected successfully");
+        res.json(user);
+      })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
+app.get("/api/author/requests/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    AuthorRequest.findById(userId)
+      .then((user) => {
+        console.log("User fetched successfully");
+        res.json(user);
+      })
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while updating the user profile." });
+  }
+});
+
 
 // get all comments for a post using the post id
 app.get("/api/post/comments/:postId", async (req, res) => {
@@ -389,14 +500,6 @@ app.get("/api/post/comments/:postId", async (req, res) => {
     res.status(500).json({ error: "An error occurred while updating the user profile." });
   }
 });
-
-
-
-
-
-
-
-
 
 
 // api to login
@@ -451,15 +554,6 @@ app.post("/register", (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
 // api to update an existing profile (this might not work because the profileId might not exist)
 app.put("/api/profile", upload.single("thumbnail"), async (req, res) => {
   try {
@@ -499,9 +593,6 @@ app.delete("/api/profile/:id", async (req, res) => {
   }
 
 })
-
-
-
 
 
 app.get("/", (req, res) => {
