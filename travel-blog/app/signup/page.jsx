@@ -55,18 +55,6 @@ const SignUp = () => {
             return
         }
 
-        // check user has agreed to terms and conditions
-        if (!document.getElementById('terms').checked) {
-            alert('Please agree to terms and conditions')
-            return
-        }
-
-        // check user has agreed learn more about travel blog
-        if (!document.getElementById('learn-more').checked) {
-            alert('Please agree to learn more about travel blog')
-            return
-        }
-
         // first convert the data URL to a Blob object
         formData.append('profileImage', profileImage);
         formData.append('firstName', firstName);
@@ -118,12 +106,17 @@ const SignUp = () => {
         // Fetch countries from the REST Countries API
         axios.get('https://restcountries.com/v3.1/all')
             .then((response) => {
-                setCountries(response.data.map((country) => country.name.common));
+                // Extract country names and sort alphabetically
+                const countryNames = response.data.map((country) => country.name.common);
+                const sortedCountries = countryNames.sort((a, b) => a.localeCompare(b));
+
+                setCountries(sortedCountries);
             })
             .catch((error) => {
                 console.error('Error fetching countries:', error);
             });
     }, []);
+
 
 
     return (
@@ -370,55 +363,6 @@ const SignUp = () => {
                             accept='image/*'
                         onChange={handleFileChange}
                     />
-                </div>
-
-
-                {/* checkbox for use of terms and privacy policy */}
-                <div
-                    className='w-full flex flex-row items-center'
-                >
-                    <input
-                        className='w-[20px] h-[20px] rounded-[3px] border border-solid border-[#cacaca] focus:outline-none mr-2'
-                        type='radio'
-                        id='learn-more'
-                    />
-                    <div
-                        className='text-[12px] text-black mb-2 text-center mt-2'
-                    >
-                        Stay informed about products and services.
-                        <span
-                            className='text-[#008489] cursor-pointer'
-                        >
-                            Learn more.
-                        </span>
-                    </div>
-                </div>
-
-                {/* checkbox for use of terms and privacy policy */}
-                <div
-                    className='mb-2 w-full flex flex-row items-center'
-                >
-                    <input
-                        className='w-[20px] h-[20px] rounded-[3px] border border-solid border-[#cacaca] focus:outline-none mr-2'
-                        type='radio'
-                        id='terms'
-                    />
-                    <div
-                        className='text-[12px] text-black mb-2 text-center mt-2'
-                    >
-                        I have read and agree to the
-                        <span
-                            className='text-[#008489] cursor-pointer ml-1 mr-1'
-                        >
-                            Terms of Use
-                        </span>
-                        and
-                        <span
-                            className='text-[#008489] cursor-pointer ml-1 mr-1'
-                        >
-                            Privacy Policy
-                        </span>
-                    </div>
                 </div>
 
                 {/* Sign up button in the middle of the page */}

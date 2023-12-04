@@ -15,9 +15,14 @@ import { RiLogoutBoxRLine } from 'react-icons/ri'
 
 import Link from 'next/link'
 
-
-
 const Sidebar = () => {
+
+    const handleLogout = () => {
+        window.localStorage.removeItem('userEmail'); // Use the actual key, 'userEmail'
+        window.location.href = '/login';
+    };
+
+
     return (
         <div
             className='flex flex-col w-1/5 h-full bg-[#F4F4F4]
@@ -200,6 +205,7 @@ const Sidebar = () => {
                 hover:bg-[#E9E9E9] cursor-pointer rounded-md
                 px-4 py-2
                     '
+                        onClick={handleLogout}
                     >
                         <RiLogoutBoxRLine className='text-xl' />
                         Log Out

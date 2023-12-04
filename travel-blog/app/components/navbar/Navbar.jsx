@@ -32,14 +32,24 @@ const Navbar = () => {
 
     return (
         <div id="NewRootRoot" className="flex flex-col w-full
-        fixed top-0 left-0 z-50">
+        fixed top-0 left-0 z-50
+        ">
             {user && (
-                <div className="bg-[#1e1e1e] flex flex-col justify-end pt-2 gap-2">
+                <div className="bg-[#1e1e1e] flex flex-col justify-end gap-2 pt-2 ">
                     <div className="flex flex-row justify-between items-center ml-12 mr-6">
-                        <div className="text-xl font-['Montserrat'] font-bold leading-[24px] text-white
-                    ">
-                            TravelBlog
+                        <div className="flex flex-row justify-between items-center ml-12 mr-6 h-[48px]">
+                            <div className="text-xl font-['Montserrat'] font-bold leading-[24px] text-white">
+                                <Image
+                                    src={'/RoamEpicLogo1.png'}
+                                    alt="RoamEpic"
+                                    id="RoamEpic"
+                                    className="w-auto h-32 object-contain"
+                                    width={222}
+                                    height={48}
+                                />
+                            </div>
                         </div>
+
                         <div className="self-start flex flex-row gap-8 w-[937px] items-center">
                             <div className="bg-[#383838] flex flex-row gap-3 w-1/2 h-12 items-center pt-2 px-5 rounded-[38px]">
                                 <Image
@@ -60,20 +70,12 @@ const Navbar = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="self-start flex flex-row gap-6 w-2/5 items-center">
-                                <div className="flex flex-row gap-5 items-start">
-                                    <Image
-                                        src="https://file.rendit.io/n/5A9GqNmRzTfcQrrAfMFK.svg"
-                                        alt="Notifications"
-                                        id="Notifications"
-                                        className="w-6 shrink-0 ml-32 mr-12 "
-                                        width={24}
-                                        height={24}
-                                    />
-                                </div>
-                                <div className="bg-[#383838] self-start flex flex-row gap-20 w-[274px] h-12 pt-2 px-2 rounded-[26.5px]">
-                                    <div className="self-start flex flex-row mt-px gap-4 w-full items-start">
+                            {
+                                email ? (
+                                    <div className="self-start flex flex-row gap-6 w-2/5 items-center">
+                                        <div className="ml-32 bg-[#383838] self-start flex flex-row gap-20 w-[274px] h-12 pt-2 px-2 rounded-[26.5px]">
 
+                                            <div className="self-start flex flex-row mt-px gap-4 w-full items-start">
                                         <
                                             Image src={user.profileImage} alt={`user.firstName`} width={15} height={15}
                                             className='text-white w-6 h-6 ml-2 mt-1 rounded-full
@@ -90,18 +92,28 @@ const Navbar = () => {
                                                 {
                                                     user.surname ? user.surname : 'LastName'
                                                 }
-                                            </span>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <select
-                                        // make it transparent
-                                        className="bg-transparent font-['Poppins'] font-medium text-white self-start mt-2 outline-none w-1/2"
+                                ) : (
+                                    // show login button
+                                    <button
+                                        className='bg-blue-500 flex flex-row gap-4 w-[174px] h-12 px-2 rounded-[26.5px] ml-56
+                                            text-white justify-center items-center text-center
+                                            hover:bg-blue-600
+                                        '
                                     >
-                                        <option value=""></option>
+                                            <Link href="/login"
+                                                className='flex flex-row gap-4 w-full h-full items-center justify-center text-center'
+                                            >
+                                                Login
+                                            </Link>
+                                        </button>
+                                    )
 
-                                    </select>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                     <div
