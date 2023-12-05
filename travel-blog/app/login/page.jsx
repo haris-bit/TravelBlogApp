@@ -19,7 +19,6 @@ const LogIn = () => {
             });
 
             if (res.data) {
-                alert("Login successful");
                 window.localStorage.setItem("userEmail", email);
                 router.push('/');
             } else {

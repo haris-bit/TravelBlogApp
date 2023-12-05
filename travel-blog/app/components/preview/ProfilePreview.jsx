@@ -18,13 +18,19 @@ const ProfilePreview = () => {
 
     // get user name using email from local storage and then call api to get the user details
     useEffect(() => {
-        fetch(`http://localhost:5001/api/user/${email}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setUser(data);
-                setFirstName(data.firstName);
-                setSurname(data.surname);
-            });
+        // Check if email is available before making the API call
+        if (email) {
+            fetch(`http://localhost:5001/api/user/${email}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    setUser(data);
+                    setFirstName(data.firstName);
+                    setSurname(data.surname);
+                })
+                .catch((error) => {
+                    console.error('Error fetching user details:', error);
+                });
+        }
     }, [email]);
 
     const handleToggleOptions = () => {

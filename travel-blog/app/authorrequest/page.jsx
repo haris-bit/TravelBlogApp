@@ -39,7 +39,10 @@ const AuthorRequest = () => {
 
 
     const handleAgree = () => {
-        setAgreed(true);
+
+        // also disable the both buttons
+        document.getElementById('agree').disabled = true;
+        document.getElementById('disagree').disabled = true;
         alert('Your request has been sent to the admin for approval');
         fetch('http://localhost:5001/api/author/request', {
             method: 'POST',
@@ -58,13 +61,17 @@ const AuthorRequest = () => {
             .then((data) => {
                 console.log(data);
             }
-            );
+        );
+
+        // redirect to the home page
+        window.location.href = '/';
 
     };
 
     const handleDisagree = () => {
         alert('Your request has been cancelled');
-        setAgreed(false);
+        document.getElementById('agree').disabled = true;
+        document.getElementById('disagree').disabled = true;
         // go back to the home page
         window.location.href = '/';
     };
@@ -187,7 +194,7 @@ const AuthorRequest = () => {
                         <button
                             className='bg-blue-500 text-white px-6 py-3 mr-4 rounded hover:bg-blue-600 focus:outline-none'
                             onClick={handleAgree}
-                            disabled={agreed}
+                            id='agree'
                         >
                             Agree and Continue
                             <MdOutlineCheckCircle className='inline-block ml-2' />
@@ -195,6 +202,7 @@ const AuthorRequest = () => {
                         <button
                             className='bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 focus:outline-none'
                             onClick={handleDisagree}
+                            id='disagree'
                         >
                             Disagree
                             <MdOutlineCancel className='inline-block ml-2' />

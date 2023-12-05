@@ -75,10 +75,10 @@ const CreatePost = () => {
                     console.log(data);
                 });
 
-            alert('Post created successfully');
+            // reload the page
+            window.location.href = '/';
         }
     };
-
 
 
     return (

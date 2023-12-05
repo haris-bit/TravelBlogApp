@@ -402,6 +402,21 @@ app.post("/api/author/request", async (req, res) => {
   }
 });
 
+
+
+// get the users who requested to get the rights of post creation
+app.get("/api/author/requests", async (req, res) => {
+  try {
+    console.log("Inside the author requests api");
+    // I want to sort the posts by the createdAt date
+    const data = await AuthorRequest.find({}).sort({ createdAt: -1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "An error occured while fetching users. " });
+  }
+});
+
+
 app.get("/api/author/:email", async (req, res) => {
   try {
     const email = req.params.email;
@@ -419,15 +434,6 @@ app.get("/api/author/:email", async (req, res) => {
 });
 
 
-// get the users who requested to get the rights of post creation
-app.get("/api/author/requests", async (req, res) => {
-  try {
-    const data = await AuthorRequest.find({});
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: "An error occured while fetching users. " });
-  }
-});
 
 // api to give the author rights to the user
 app.put("/api/author/request/approve/:userId", async (req, res) => {
