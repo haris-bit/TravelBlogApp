@@ -77,7 +77,7 @@ const Security = () => {
 
     return (
         <div
-            className='flex flex-col w-full h-full bg-[#f4f4f4] '
+            className='flex flex-col w-full h-full bg-[#f4f4f4] container mx-auto p-2'
         >
             <Navbar />
 
