@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="bg-[#1e1e1e] flex flex-col justify-end gap-2 pt-2 ">
           <div className="flex flex-row justify-between items-center ml-10 mr-6">
             <div className="flex flex-row justify-between items-center mr-6 h-[48px]">
-              <div className="flex items-center">
+              <Link href="/" className="flex items-center">
                 <div className="text-xl font-bold text-white">
                   <Image
                     src={"/RoamEpicLogo1.png"}
@@ -52,7 +52,7 @@ const Navbar = () => {
                   />
                 </div>
                 <div className="text-white ml-2">Roam Epic</div>
-              </div>
+              </Link>
             </div>
 
             <div className="self-start flex flex-row gap-8 w-[937px] items-center">
