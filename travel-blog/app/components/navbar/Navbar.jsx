@@ -39,8 +39,8 @@ const Navbar = () => {
     >
       {user && (
         <div className="bg-[#1e1e1e] flex flex-col justify-end gap-2 pt-2 ">
-          <div className="flex flex-row justify-between items-center ml-10 mr-6">
-            <div className="flex flex-row justify-between items-center mr-6 h-[48px]">
+          <div className="flex flex-row justify-between items-center ml-2 lg:ml-10 mr-2 lg:mr-6">
+            <div className="flex flex-row justify-between items-center mr-2 lg:mr-6 h-[48px]">
               <Link href="/" className="flex items-center">
                 <div className="text-xl font-bold text-white">
                   <Image
@@ -55,7 +55,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="self-start flex flex-row gap-8 w-[937px] items-center">
+            <div className="self-start flex flex-row gap-8 w-full lg:w-[937px] items-center">
               {/* <div className="bg-[#383838] flex flex-row gap-3 w-1/2 h-12 items-center pt-2 px-5 rounded-[38px]">
                                 <Image
                                     src="https://file.rendit.io/n/XqHhVu83KMJ1BsNLTOOi.svg"
