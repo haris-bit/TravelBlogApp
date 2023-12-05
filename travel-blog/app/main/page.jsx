@@ -9,7 +9,7 @@ import ProfilePreview from '@app/components/preview/ProfilePreview';
 const MainPage = () => {
     return (
         <div
-            className='flex flex-col w-full min-h-screen bg-[#F4F4F4] text-black '
+            className='flex flex-col w-full min-h-screen bg-[#F4F4F4] text-black  container mx-auto p-2'
         >
             <Navbar />
             <div

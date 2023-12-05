@@ -67,10 +67,10 @@ const LogIn = () => {
                     />
                 </div>
 
-                <p className="text-[14px] text-transparent mb-6">
+                {/* <p className="text-[14px] text-transparent mb-6">
                     <span className="text-black">Forgot password? </span>
                     <span className="text-[#00a3e8] cursor-pointer">Help</span>
-                </p>
+                </p> */}
 
                 <div className="mb-6
                 flex justify-center items-center

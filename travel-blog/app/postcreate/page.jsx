@@ -88,11 +88,12 @@ const CreatePost = () => {
             <Sidebar />
 
             {/* Create Post Content */}
-            <div className="flex flex-col ml-[300px] w-full mt-24">
-                <div className="flex flex-col w-[600px] bg-white rounded-2xl shadow-md">
+            <div className="flex flex-col w-full mt-32">
+                <div className="flex justify-center items-center">
+                <div className="flex flex-col w-[1000px] bg-white rounded-2xl shadow-md">
                     <textarea
                         placeholder="Type to create a post..."
-                        rows={14}
+                        rows={20}
                         value={description}
                         onChange={handleTextChange}
                         className="w-full p-4 text-gray-500 border-none outline-none bg-gray-200 rounded-t-2xl"
@@ -139,9 +140,10 @@ const CreatePost = () => {
                         Create Post
                     </button>
                 </div>
+                </div>
 
                 {/* Profile Preview */}
-                <ProfilePreview />
+                <ProfilePreview className="mb-32"/>
             </div>
         </div>
     );

@@ -47,7 +47,7 @@ const Sidebar = () => {
 
         <div>
           <Link
-            href="/popular"
+            href="/"
             className="flex items-center
                 hover:bg-[#E9E9E9]
                 hover:rounded-md
@@ -64,7 +64,7 @@ const Sidebar = () => {
         <div>
           {/* here how can I pass the email */}
           <Link
-            href="/profile"
+            href="/"
             className="flex items-center 
                 hover:bg-[#E9E9E9]
                 hover:rounded-md

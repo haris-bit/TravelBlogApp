@@ -59,9 +59,9 @@ const ProfilePreview = () => {
                     <span className="mt-2 text-sm font-semibold">{user.firstName + ' ' + user.surname}</span>
                     <span className='mt-1 text-sm text-gray-500 leading-loose tracking-wide'>{user.bio}</span>
 
-                    <h2 className='mt-4 text-sm font-semibold text-black leading-loose tracking-wide'>
+                    {/* <h2 className='mt-4 text-sm font-semibold text-black leading-loose tracking-wide'>
                         3,243 followers
-                    </h2>
+                    </h2> */}
 
 
                     {/* Edit Profile button */}
