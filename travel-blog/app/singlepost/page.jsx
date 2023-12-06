@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 // import three dots icon from react-icons
 import { BiDotsHorizontalRounded } from 'react-icons/bi'
 // imoprt icons for heart, comment and share
@@ -8,9 +8,8 @@ import { BiComment } from 'react-icons/bi'
 import { RiShareForwardLine } from 'react-icons/ri'
 import { FaRegComment } from "react-icons/fa6";
 import { FiShare2 } from "react-icons/fi";
-import { useEffect, useState } from 'react';
 
-const SinglePost = ({ post }) => {
+const SinglePost = ({ post, isMobile }) => {
     console.log(post);
     // destructure post object
     const { username, email, description, attachment, likes, comments, createdAt } = post
@@ -185,9 +184,10 @@ const SinglePost = ({ post }) => {
 
     return (
         <div
-            className='flex flex-col w-[500px] min-h-[520px] bg-white rounded-2xl shadow-md mt-4
-            ml-[345px] mb-2 pb-4'
-        >
+        className={`flex flex-col ${
+          isMobile ? 'w-full' : 'w-[500px] min-h-[520px]'
+        } bg-white rounded-2xl shadow-md mt-4 ml-[345px] mb-2 pb-4`}
+      >
             {/* div for image, name, time ago and three dots */}
             <div
                 className='flex flex-row items-center w-full  h-24 px-5 py-2'
@@ -305,7 +305,7 @@ const SinglePost = ({ post }) => {
             )}
 
         </div>
-    )
-}
+    );
+};
 
 export default SinglePost

@@ -21,6 +21,7 @@ const PostFeed = () => {
                 <SinglePost
                     key={post._id}
                     post={post}
+                    isMobile={window.innerWidth <= 768}
                 />
             ))}
         </div>

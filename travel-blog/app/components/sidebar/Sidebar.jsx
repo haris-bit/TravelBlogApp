@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 // home icon from react-icons
 import { AiFillHome } from "react-icons/ai";
@@ -16,19 +18,52 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import Link from "next/link";
 
 const Sidebar = () => {
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust the breakpoint as needed
+    };
+
+    // Initial check and add event listener
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+
   const handleLogout = () => {
     window.localStorage.removeItem("userEmail"); // Use the actual key, 'userEmail'
     window.location.href = "/login";
   };
 
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+
   return (
     <div
-      className="flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-full bg-[#F4F4F4] border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4 font-sans fixed top-16 left-0 z-50 text-black
-            "
+      className={`flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-full bg-[#F4F4F4] border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4 font-sans fixed top-16 left-0 z-50 text-black`}
     >
-      {/* navbar links */}
+      {isMobile && (
+        <div className="text-3xl cursor-pointer mb-4" onClick={toggleSidebar}>
+          &#x2630; {/* Hamburger icon */}
+        </div>
+      )}
 
-      <div className="flex flex-col justify-center gap-4">
+      <div
+        className={`flex flex-col justify-center gap-4 ${
+          isMobile && !isSidebarOpen ? "hidden" : ""
+        }`}
+      >
         <div>
           <Link
             href="/"
@@ -78,7 +113,7 @@ const Sidebar = () => {
             <span className="text-center">Profile</span>
           </Link>
         </div>
-      </div>
+      
 
       <hr className="border border-[#D3D3D3] mt-4 mb-2 " />
 
@@ -166,6 +201,8 @@ const Sidebar = () => {
           </span>
         </Link>
       </div>
+      </div>
+
     </div>
   );
 };
