@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
+import { toast } from "react-toastify";
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
@@ -11,29 +12,65 @@ const LogIn = () => {
 
     const router = useRouter();
 
+
     const handleLogin = async () => {
         try {
-            const res = await axios.post("http://localhost:5001/login", {
-                email,
-                password,
-            });
+          const res = await axios.post("http://localhost:5001/login", {
+            email,
+            password,
+          });
+      
+          if (res.data) {
+            window.localStorage.setItem("userEmail", email);
+            toast.success("Login Successful");
+            router.push('/');
+          } else {
+            toast.error("Login failed");
+          }
+        } catch (err) {
+          if (err.response) {
+            if (err.response.status === 401) {
+              toast.error("Email and Password do not match");
+            } else if (err.response.status === 404) {
+              toast.error("User with Email doesn't exist");
+            } else {
+              console.log(err);
+              toast.error("An error occurred");
+            }
+          } else {
+            console.log(err);
+            toast.error("An error occurred");
+          }
+        }
+      };
 
-            if (res.data) {
-                window.localStorage.setItem("userEmail", email);
-                router.push('/');
-            } else {
-                alert("Login failed");
-            }
-        }
-        catch (err) {
-            if (err.response && err.response.status === 404) {
-                alert("User not found");
-            } else {
-                console.log(err);
-                alert("An error occurred");
-            }
-        }
-    };
+
+
+
+
+    // const handleLogin = async () => {
+    //     try {
+    //         const res = await axios.post("http://localhost:5001/login", {
+    //             email,
+    //             password,
+    //         });
+
+    //         if (res.data) {
+    //             window.localStorage.setItem("userEmail", email);
+    //             router.push('/');
+    //         } else {
+    //             alert("Login failed");
+    //         }
+    //     }
+    //     catch (err) {
+    //         if (err.response && err.response.status === 404) {
+    //             alert("User not found");
+    //         } else {
+    //             console.log(err);
+    //             alert("An error occurred");
+    //         }
+    //     }
+    // };
 
 
     return (

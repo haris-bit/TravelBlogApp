@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { GrCamera } from 'react-icons/gr';
 import Image from 'next/image';
+import { toast } from "react-toastify";
 
 const SignUp = () => {
     const [countries, setCountries] = useState([]);
@@ -77,6 +78,7 @@ const SignUp = () => {
 
             if (response.ok) {
                 console.log("User created successfully!");
+                toast.success("Account Created");
                 // go to the login page
                 window.location.href = '/login'
             } else {

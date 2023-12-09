@@ -7,6 +7,7 @@ import { CiImageOn } from 'react-icons/ci';
 import Navbar from '@app/components/navbar/Navbar';
 import Sidebar from '@app/components/sidebar/Sidebar';
 import ProfilePreview from '@app/components/preview/ProfilePreview';
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
     // State variables
@@ -55,8 +56,8 @@ const CreatePost = () => {
     // Handle post creation
     const handleCreatePost = () => {
         if (authorStatus !== 'Approved') {
-            alert('You are not an approved author. Your status is ' + authorStatus);
             window.location.href = '/';
+            toast.error("You are not an approved author. Your status is " + authorStatus);
             return;
         }
         else {
@@ -73,10 +74,12 @@ const CreatePost = () => {
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
+                    // Display success message
                 });
-
-            // reload the page
-            window.location.href = '/';
+                
+                // reload the page
+                window.location.href = '/';
+                toast.success("Post created");
         }
     };
 

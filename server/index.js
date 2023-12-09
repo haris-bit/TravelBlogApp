@@ -11,6 +11,7 @@ const path = require("path");
 const { Console } = require("console");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+const bcrypt = require('bcrypt');
 
 const uploadRoute = require('./controller/routeUpload');
 
@@ -50,6 +51,8 @@ const upload = multer({ storage: storage });
 app.use("/api/users" , uploadRoute);
 
 
+
+
 app.post("/api/create", upload.single("profileImage"), async (req, res) => {
   try {
     // Upload the image to Cloudinary
@@ -60,12 +63,16 @@ app.post("/api/create", upload.single("profileImage"), async (req, res) => {
       throw new Error('Cloudinary upload failed');
     }
 
-    // Create a new user with Cloudinary URL
+    // Hash the password before saving it
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+    // Create a new user with hashed password
     const newUser = {
       firstName: req.body.firstName,
       surname: req.body.surname,
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword, // Save hashed password
       country: req.body.country,
       bio: req.body.bio,
       monthOfBirth: req.body.monthOfBirth,
@@ -508,23 +515,60 @@ app.get("/api/post/comments/:postId", async (req, res) => {
 });
 
 
-// api to login
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        if (password === user.password) {
-          res.json(user);
-        } else {
-          res.json({ message: 'Password does not match' });
-        }
+
+
+
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    console.log('Received email:', email);
+    console.log('Received password:', password);
+
+
+    // Check if the user exists
+    const user = await User.findOne({ email: email });
+
+    if (user) {
+      // Compare the provided password with the stored hashed password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+
+      if (passwordMatch) {
+        // Passwords match, send user data as response
+        res.json(user);
       } else {
-        res.json({ message: 'User not found' });
+        // Password does not match
+        res.status(401).json({ message: 'Invalid credentials' });
       }
+    } else {
+      // User not found
+      res.status(404).json({ message: 'User not found' });
     }
-    )
-})
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+// api to login
+// app.post('/login', (req, res) => {
+//   const { email, password } = req.body;
+//   User.findOne({ email: email })
+//     .then((user) => {
+//       if (user) {
+//         if (password === user.password) {
+//           res.json(user);
+//         } else {
+//           res.json({ message: 'Password does not match' });
+//         }
+//       } else {
+//         res.json({ message: 'User not found' });
+//       }
+//     }
+//     )
+// })
 
 
 // api to create account

@@ -21,7 +21,20 @@ const Sidebar = () => {
 
   const [isMobile, setIsMobile] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); // Track user login status
 
+  
+  
+  
+  useEffect(() => {
+    const email = window.localStorage.getItem("userEmail");
+    setLoggedIn(!!email); // Set loggedIn to true if email is present, false otherwise
+  }, []);
+
+  
+
+  
+  
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768); // Adjust the breakpoint as needed
@@ -188,6 +201,9 @@ const Sidebar = () => {
           Help
         </span>
 
+        {loggedIn && (
+
+
         <Link href="/login">
           <span
             className="text-normal flex items-center gap-2  
@@ -200,6 +216,9 @@ const Sidebar = () => {
             Log Out
           </span>
         </Link>
+        )}
+
+
       </div>
       </div>
 

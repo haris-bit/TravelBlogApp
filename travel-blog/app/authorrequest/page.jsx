@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 // import agree and disagree icons from react-icons
 import { MdOutlineCheckCircle } from 'react-icons/md';
 import { MdOutlineCancel } from 'react-icons/md';
+import { toast } from "react-toastify";
 
 const AuthorRequest = () => {
     const [agreed, setAgreed] = useState(false);
@@ -43,7 +44,7 @@ const AuthorRequest = () => {
         // also disable the both buttons
         document.getElementById('agree').disabled = true;
         document.getElementById('disagree').disabled = true;
-        alert('Your request has been sent to the admin for approval');
+        toast.success("Your request has been sent to the admin for approval");
         fetch('http://localhost:5001/api/author/request', {
             method: 'POST',
             headers: {
