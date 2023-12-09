@@ -45,7 +45,7 @@ const AuthorRequest = () => {
         fetch(`http://localhost:5001/api/author/${email}`)
             .then((res) => res.json())
             .then((data) => {
-                setStatus(data.status);
+                setStatus(data?.status);
                 setStatusChecked(true);
             });
     }, [email]);
@@ -89,6 +89,8 @@ const AuthorRequest = () => {
                 }
                 );
             toast.success("Your request has been sent to the admin for approval");
+            // go back to the home page
+            window.location.href = '/';
         }
         catch (err) {
             toast.error("You already sent a request. Please wait for the admin to approve your request.");
@@ -96,7 +98,7 @@ const AuthorRequest = () => {
     };
 
     const handleDisagree = () => {
-        alert('Your request has been cancelled');
+        toast.error("Your request has been cancelled");
         document.getElementById('agree').disabled = true;
         document.getElementById('disagree').disabled = true;
         // go back to the home page

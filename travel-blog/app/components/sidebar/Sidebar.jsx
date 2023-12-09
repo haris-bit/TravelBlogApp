@@ -112,7 +112,7 @@ const Sidebar = () => {
         <div>
           {/* here how can I pass the email */}
           <Link
-            href="/"
+            href="/profile"
             className="flex items-center 
                 hover:bg-[#E9E9E9]
                 hover:rounded-md

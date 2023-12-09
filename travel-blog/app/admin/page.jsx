@@ -3,6 +3,7 @@
 import Navbar from '@app/components/navbar/Navbar'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
+import {toast} from "react-toastify"; 
 
 const Admin = () => {
     const [requests, setRequests] = useState([]);
@@ -27,7 +28,7 @@ const Admin = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                alert('Author request accepted');
+                toast.success("Author request accepted");
                 window.location.reload();
             });
     };
@@ -41,7 +42,7 @@ const Admin = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                alert('Author request rejected');
+                toast.error("Author request rejected");
                 window.location.reload();
             });
     };

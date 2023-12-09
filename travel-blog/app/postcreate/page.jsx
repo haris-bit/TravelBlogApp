@@ -90,12 +90,12 @@ const CreatePost = () => {
             <Sidebar />
 
             {/* Create Post Content */}
-            <div className="flex ml-[340px] w-[840px] mt-4 h-60">
+            <div className="flex ml-[640px] w-[1080px] mt-4 h-60">
                 <div className="flex w-full flex-col h-32">
                     <div className="  mt-24  flex flex-col bg-white rounded-2xl shadow-md">
                     <textarea
                         placeholder="Type to create a post..."
-                            rows={12}
+                            rows={22}
                         value={description}
                         onChange={handleTextChange}
                         className="w-full p-4 text-gray-500 border-none outline-none bg-gray-200 rounded-t-2xl"
