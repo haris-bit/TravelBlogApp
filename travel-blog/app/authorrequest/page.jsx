@@ -17,6 +17,9 @@ const AuthorRequest = () => {
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [profileImage, setProfileImage] = useState('');
+    const [status, setStatus] = useState('');
+    const [statusChecked, setStatusChecked] = useState(false);
+
 
     const [user, setUser] = useState({});
 
@@ -38,35 +41,58 @@ const AuthorRequest = () => {
             });
     }, [email]);
 
-
-    const handleAgree = () => {
-
-        // also disable the both buttons
-        document.getElementById('agree').disabled = true;
-        document.getElementById('disagree').disabled = true;
-        toast.success("Your request has been sent to the admin for approval");
-        fetch('http://localhost:5001/api/author/request', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userId: userId,
-                firstName: firstName,
-                surname: surname,
-                email: email,
-                profileImage: profileImage,
-            }),
-        })
+    useEffect(() => {
+        fetch(`http://localhost:5001/api/author/${email}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                setStatus(data.status);
+                setStatusChecked(true);
+            });
+    }, [email]);
+
+    useEffect(() => {
+        // Check if the status has been checked before executing the if statement
+        if (statusChecked) {
+            if (status === 'Pending') {
+                toast.error("You already sent a request. Please wait for the admin to approve your request.");
+                // disable the both buttons
+                document.getElementById('agree').disabled = true;
+                document.getElementById('disagree').disabled = true;
             }
-        );
+        }
+    }, [status, statusChecked]);
 
-        // redirect to the home page
-        window.location.href = '/';
 
+    const handleAgree = () => {
+        try {
+            // check if the user already sent a request
+
+            // also disable the both buttons
+            document.getElementById('agree').disabled = true;
+            document.getElementById('disagree').disabled = true;
+            fetch('http://localhost:5001/api/author/request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    firstName: firstName,
+                    surname: surname,
+                    email: email,
+                    profileImage: profileImage,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                }
+                );
+            toast.success("Your request has been sent to the admin for approval");
+        }
+        catch (err) {
+            toast.error("You already sent a request. Please wait for the admin to approve your request.");
+        }
     };
 
     const handleDisagree = () => {
@@ -197,7 +223,7 @@ const AuthorRequest = () => {
                             onClick={handleAgree}
                             id='agree'
                         >
-                            Agree and Continue
+                            Agree and Apply
                             <MdOutlineCheckCircle className='inline-block ml-2' />
                         </button>
                         <button

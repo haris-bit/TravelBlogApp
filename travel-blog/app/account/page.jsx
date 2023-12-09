@@ -6,6 +6,8 @@ import UserNavbar from '../usernav/page';
 import Sidebar from '@app/components/sidebar/Sidebar';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { toast } from "react-toastify";
+
 
 
 const Account = () => {
@@ -44,9 +46,10 @@ const Account = () => {
             window.localStorage.setItem('userEmail', user.email);
             const response = await axios.put(`http://localhost:5001/api/user/account/${email}`, user);
             console.log(response.data);
-            alert('Changes applied successfully!');
+            toast.success('Profile Updated Successfully.Kindly Login Again.');
+            window.location.href = '/login';
         } catch (error) {
-            console.error('Error updating user:', error);
+            toast.error("An error occurred. Please try again.");
         }
     };
 

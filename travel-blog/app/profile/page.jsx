@@ -9,6 +9,8 @@ import UserNavbar from '../usernav/page';
 import Navbar from '@app/components/navbar/Navbar';
 import Sidebar from '@app/components/sidebar/Sidebar';
 import axios from 'axios';
+import { toast } from "react-toastify";
+
 
 
 const Profile = () => {
@@ -72,11 +74,12 @@ const Profile = () => {
                 .then((response) => response.json())
                 .then((result) => {
                     console.log('Success:', result);
-                    alert('Profile updated successfully!');
+                    toast.success("Profile updated successfully!");
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
+                    // alert('An error occurred. Please try again.');
+                    toast.error("An error occurred. Please try again.");
                 });
 
         } catch (error) {

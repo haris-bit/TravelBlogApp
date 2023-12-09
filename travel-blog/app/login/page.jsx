@@ -14,7 +14,11 @@ const LogIn = () => {
 
 
     const handleLogin = async () => {
-        try {
+      try {
+        if (!email || !password) {
+          toast.error("Please fill all fields");
+          return;
+        }
           const res = await axios.post("http://localhost:5001/login", {
             email,
             password,

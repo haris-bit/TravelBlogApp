@@ -7,6 +7,7 @@ import Navbar from '@app/components/navbar/Navbar';
 import Sidebar from '@app/components/sidebar/Sidebar';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 const Security = () => {
     const [user, setUser] = useState({});
@@ -43,13 +44,13 @@ const Security = () => {
 
         // check if any password is empty
         if (!newPassword || !confirmNewPassword) {
-            alert('Please fill in all the fields!');
+            toast.error('Please fill in all the fields!');
             return;
         }
 
         // Check if the new password matches the confirm password
         if (newPassword !== confirmNewPassword) {
-            alert('Passwords do not match!');
+            toast.error('Passwords do not match!');
             return;
         }
 
@@ -67,7 +68,7 @@ const Security = () => {
             })
                 .then((response) => response.json())
                 .then((json) => console.log(json));
-            alert('Password changed successfully!');
+            toast.success('Password changed successfully!');
             setNewPassword('');
             setConfirmNewPassword('');
         } catch (error) {

@@ -64,7 +64,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-full bg-[#F4F4F4] border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4 font-sans fixed top-16 left-0 z-50 text-black`}
+      className={`flex flex-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-screen bg-[#F4F4F4] border border-r border-[#D3D3D3] pl-4 pr-4 pt-4 pb-4 font-sans fixed top-16 left-0 z-50 text-black`}
     >
       {isMobile && (
         <div className="text-3xl cursor-pointer mb-4" onClick={toggleSidebar}>
@@ -201,9 +201,7 @@ const Sidebar = () => {
           Help
         </span>
 
-        {loggedIn && (
-
-
+          {loggedIn && (
         <Link href="/login">
           <span
             className="text-normal flex items-center gap-2  

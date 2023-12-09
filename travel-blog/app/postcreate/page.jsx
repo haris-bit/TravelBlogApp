@@ -48,7 +48,7 @@ const CreatePost = () => {
         fetch(`http://localhost:5001/api/author/${email}`)
             .then((res) => res.json())
             .then((data) => {
-                setAuthorStatus(data.status);
+                setAuthorStatus(data?.status);
             });
     }, [email]);
 
@@ -56,8 +56,7 @@ const CreatePost = () => {
     // Handle post creation
     const handleCreatePost = () => {
         if (authorStatus !== 'Approved') {
-            window.location.href = '/';
-            toast.error("You are not an approved author. Your status is " + authorStatus);
+            toast.error("You are not an approved author.");
             return;
         }
         else {
@@ -78,8 +77,8 @@ const CreatePost = () => {
                 });
                 
                 // reload the page
-                window.location.href = '/';
-                toast.success("Post created");
+            toast.success("Post created successfully. ");
+            window.location.href = '/';
         }
     };
 
@@ -91,12 +90,12 @@ const CreatePost = () => {
             <Sidebar />
 
             {/* Create Post Content */}
-            <div className="flex flex-col w-full mt-32">
-                <div className="flex justify-center items-center">
-                <div className="flex flex-col w-[1000px] bg-white rounded-2xl shadow-md">
+            <div className="flex ml-[340px] w-[840px] mt-4 h-60">
+                <div className="flex w-full flex-col h-32">
+                    <div className="  mt-24  flex flex-col bg-white rounded-2xl shadow-md">
                     <textarea
                         placeholder="Type to create a post..."
-                        rows={20}
+                            rows={12}
                         value={description}
                         onChange={handleTextChange}
                         className="w-full p-4 text-gray-500 border-none outline-none bg-gray-200 rounded-t-2xl"
@@ -146,7 +145,7 @@ const CreatePost = () => {
                 </div>
 
                 {/* Profile Preview */}
-                <ProfilePreview className="mb-32"/>
+                {/* <ProfilePreview className="mb-32"/> */}
             </div>
         </div>
     );

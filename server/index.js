@@ -381,35 +381,50 @@ app.post("/api/post/comment/:postId/:username", async (req, res) => {
   }
 });
 
-// api to post the request for author rights
+// api to create a new author request
+// api to create a new author request
 app.post("/api/author/request", async (req, res) => {
   try {
+    const userId = req.body.userId;
+
+    // Check if the user has already submitted an author request
+    const existingRequest = await AuthorRequest.findOne({ userId });
+
+    if (existingRequest) {
+      console.log('User has already submitted an author request. Skipping.');
+      return res.status(400).json({ error: "User has already submitted an author request." });
+    }
+
+    // Check the user's current status
+    const user = await User.findById(userId);
+
+    if (user.status === 'Pending') {
+      console.log('User status is already "Requested". Skipping author request creation.');
+      return res.status(400).json({ error: "User status is already 'Pending'. Skipping author request creation." });
+    }
+
+    // Proceed with author request creation
     const newRequest = {
-      userId: req.body.userId,
+      userId: userId,
       firstName: req.body.firstName,
       surname: req.body.surname,
       email: req.body.email,
       profileImage: req.body.profileImage
-    }
+    };
 
     console.log("Inside the author request api");
     console.log(newRequest);
 
-    AuthorRequest.create(newRequest)
-      .then((request) => {
-        console.log("Request added successfully");
-        res.json(request);
-      }
-      )
+    // Step 1: Create a new author request
+    const authorRequest = await AuthorRequest.create(newRequest);
 
-
+    console.log("Request added successfully");
+    return res.status(201).json(authorRequest);
   } catch (error) {
     console.error(error); // Log the error for debugging
-    res.status(500).json({ error: "An error occurred: " + error.message });
+    return res.status(500).json({ error: "An error occurred: " + error.message });
   }
 });
-
-
 
 // get the users who requested to get the rights of post creation
 app.get("/api/author/requests", async (req, res) => {
